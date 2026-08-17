@@ -29,6 +29,7 @@ sm2 --start SDEC_INTERNAL_FRONTEND
 ```bash
 sbt clean -Dbrowser="<browser>" -Denvironment="local" test testReport
 ```
+sbt clean -Dbrowser="chrome" -Denvironment="local" test testReport
 
 ## Scalafmt
 

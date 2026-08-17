@@ -19,9 +19,8 @@ package uk.gov.hmrc.ui.specs
 import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
-import org.scalatest.matchers.must.Matchers
+import uk.gov.hmrc.ui.pages.{AuthLoginPage, WorkspacePage}
 import uk.gov.hmrc.ui.pages.AuthLoginPage.{driver, login}
-import uk.gov.hmrc.ui.pages.WorkspacePage
 import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
 
 import java.time.Duration
@@ -32,43 +31,60 @@ class WorkspaceSpec extends BaseSpec {
     Scenario("Get Landing Page", AcceptanceTests) {
 
       Given("User Logins with Credential ID") // This might be the wrong way for internal HMRC staff to login for now
-      login()
+      AuthLoginPage.login()
 
       When("the dashboard page loads")
+
       Then("the system must display a dashboard page layout")
-      val heading = driver.findElement(By.tagName("h1"))
+      WorkspacePage.getHeading.getText should include("Share Files Securely with Child Benefit Service")
 
       And("the system must display a navigation area")
+      WorkspacePage.getWorkspaceTab.getText should include("Workspace")
 
-      println(s"URL: ${driver.getCurrentUrl}")
-      println(s"Title: ${driver.getTitle}")
+    }
 
-      val wait = new WebDriverWait(driver, Duration.ofSeconds(15))
+    Scenario("Create Thread Button Display", AcceptanceTests) {
 
-      val workspaceTab = wait.until(
-        ExpectedConditions.visibilityOfElementLocated(By.id("tab_workspace"))
-      )
+      Given("User Logins with Credential ID") // This might be the wrong way for internal HMRC staff to login for now
+      AuthLoginPage.login()
 
-      val notificationTab = driver.findElement(By.id("tab_notifications"))
+      When("the dashboard page loads")
 
-      heading.getText         shouldBe "SDEC Internal Dashboard"
-      workspaceTab.getText    shouldBe "Workspace"
-      notificationTab.getText shouldBe "Notifications"
-
-      val wPage           = new WorkspacePage(driver)
-      val buttonDisplayed = wPage.isCreateThreadButtonDisplayed
-      val buttonEnabled   = wPage.isCreateThreadButtonEnabled
-      val buttonText      = wPage.getThreadButtonText
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
 
       Then("""a "Create thread" button must be displayed""")
 
-      buttonDisplayed shouldBe true
+      WorkspacePage.isCreateThreadButtonDisplayed shouldBe true
 
       And("the button must be selectable")
-      buttonEnabled shouldBe true
+      WorkspacePage.isCreateThreadButtonEnabled shouldBe true
 
       And("the button must follow GOV.UK Design System standards")
-      buttonText shouldBe "Create Thread"
+      WorkspacePage.getThreadButtonText should include("Create new thread")
+
+    }
+
+    Scenario("View Thread Information", AcceptanceTests) {
+
+      Given("User Logins with Credential ID") // This might be the wrong way for internal HMRC staff to login for now
+      AuthLoginPage.login()
+
+      When("the dashboard page loads")
+
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+
+      Then("""the thread information details are displayed in a table with title "shared work queue"""")
+
+      WorkspacePage.getThreadInformationText should include("Shared work queue")
+
+      And("the table has Thread Reference, Related Reference, External Contact, Status, Waiting on and Deadline")
+
+      WorkspacePage.getThreadReferenceText  shouldBe "Thread Reference"
+      WorkspacePage.getRelatedReferenceText shouldBe "Related reference"
+      WorkspacePage.getExternalContactText  shouldBe "External contact"
+      WorkspacePage.getStatusText           shouldBe "Status"
+      WorkspacePage.getWaitingOnText        shouldBe "Waiting on"
+      WorkspacePage.getDeadlineText         shouldBe "Deadline"
 
     }
 
