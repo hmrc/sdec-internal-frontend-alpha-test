@@ -24,27 +24,26 @@ import java.time.Duration
 
 object WorkspacePage extends BasePage {
 
-  val introTextLocator: By          = By.xpath("//*[contains(normalize-space(), 'Share Files Securely')]")
-  val createThreadButtonLocator: By = By.xpath(
-    "//*[@id=\"main-content\"]/div/div[1]/a"
-  )
-  val heading: By                   = By.xpath("/html/body/header/div/div[2]/a")
-  val workspaceTab: By              = By.xpath("/html/body/div/nav/div/a")
-  val threadInformationText: By     = By.xpath("//*[@id=\"main-content\"]/div/h2")
-  val threadReferenceText: By       = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[1]")
-  val relatedReferenceText: By      = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[2]")
-  val externalContactText: By       = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[3]")
-  val statusText: By                = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[4]")
-  val waitingOnText: By             = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[5]")
-  val deadlineText: By              = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[6]")
+  val heading: By                       = By.xpath("/html/body/header/div/div[2]/a")
+  val workspaceTab: By                  = By.xpath("//*[@id=\"navigation\"]/li[2]/a")
+  val threadInformationText: By         = By.xpath("//*[@id=\"main-content\"]/div/h2")
+  val threadReferenceText: By           = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[1]")
+  val relatedReferenceText: By          = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[2]")
+  val externalContactText: By           = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[3]")
+  val statusText: By                    = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[4]")
+  val waitingOnText: By                 = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[5]")
+  val deadlineText: By                  = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[6]")
+  val statusValueText: By               = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[6]")
+  val statusValueNeedsAttentionText: By =
+    By.cssSelector("#main-content > div > div.table-scroll-wrapper > table > tbody > tr:nth-child(4) > td:nth-child(4)")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(10))
 
-  def getIntroductoryText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getText.trim
+  def getStatusValueText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(statusValueText)).getText.trim
 
-  def getCreateThreadButton: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(createThreadButtonLocator))
+  def getStatusValueNeedsAttentionText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(statusValueNeedsAttentionText)).getText.trim
 
   def getThreadInformationText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(threadInformationText)).getText.trim
@@ -71,22 +70,4 @@ object WorkspacePage extends BasePage {
 
   def getWorkspaceTab: WebElement = wait.until(ExpectedConditions.visibilityOfElementLocated(workspaceTab))
 
-  def isCreateThreadButtonDisplayed: Boolean =
-    driver.findElements(createThreadButtonLocator).asScala.nonEmpty &&
-      getCreateThreadButton.isDisplayed
-
-  def isCreateThreadButtonEnabled: Boolean =
-    getCreateThreadButton.isEnabled
-
-  def getThreadButtonText: String =
-    getCreateThreadButton.getText.trim
-
-  def selectCreateThreadButton(): Unit =
-    getCreateThreadButton.click()
-
-  def isIntroTextDisplayedBeforeButton: Boolean = {
-    val introLocation  = wait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getLocation
-    val buttonLocation = getCreateThreadButton.getLocation
-    introLocation.getY < buttonLocation.getY
-  }
 }

@@ -21,7 +21,7 @@ Start the following services:
  - AUTH_LOGIN_sTUB
 
 ```bash
-sm2 --start SDEC_INTERNAL_FRONTEND
+sm2 --start SDEC_INTERNAL_FRONTEND_ALPHA_TEST
 ```
 
 ## Tests
