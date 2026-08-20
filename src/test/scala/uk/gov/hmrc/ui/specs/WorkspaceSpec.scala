@@ -16,61 +16,69 @@
 
 package uk.gov.hmrc.ui.specs
 
-import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
-import org.scalatest.matchers.must.Matchers
-import uk.gov.hmrc.ui.pages.AuthLoginPage.{driver, login}
-import uk.gov.hmrc.ui.pages.WorkspacePage
+import uk.gov.hmrc.ui.pages.{AuthLoginPage, WorkspacePage}
 import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
 
 import java.time.Duration
 
 class WorkspaceSpec extends BaseSpec {
-  Feature("Internal User Journey") {
+  Feature("Internal User Journey - Workspace ") {
 
     Scenario("Get Landing Page", AcceptanceTests) {
 
-      Given("User Logins with Credential ID") // This might be the wrong way for internal HMRC staff to login for now
-      login()
+      Given("Test User Logins with Credential ID")
+      AuthLoginPage.login()
 
-      When("the dashboard page loads")
-      Then("the system must display a dashboard page layout")
-      val heading = driver.findElement(By.tagName("h1"))
+      When("the dashboard page loads for the Test user")
 
-      And("the system must display a navigation area")
+      Then("the Test User should be able to view a dashboard page ")
+      WorkspacePage.getHeading.getText should include("Share Files Securely with Child Benefit Service")
 
-      println(s"URL: ${driver.getCurrentUrl}")
-      println(s"Title: ${driver.getTitle}")
-
-      val wait = new WebDriverWait(driver, Duration.ofSeconds(15))
-
-      val workspaceTab = wait.until(
-        ExpectedConditions.visibilityOfElementLocated(By.id("tab_workspace"))
-      )
-
-      val notificationTab = driver.findElement(By.id("tab_notifications"))
-
-      heading.getText         shouldBe "SDEC Internal Dashboard"
-      workspaceTab.getText    shouldBe "Workspace"
-      notificationTab.getText shouldBe "Notifications"
-
-      val wPage           = new WorkspacePage(driver)
-      val buttonDisplayed = wPage.isCreateThreadButtonDisplayed
-      val buttonEnabled   = wPage.isCreateThreadButtonEnabled
-      val buttonText      = wPage.getThreadButtonText
-
-      Then("""a "Create thread" button must be displayed""")
-
-      buttonDisplayed shouldBe true
-
-      And("the button must be selectable")
-      buttonEnabled shouldBe true
-
-      And("the button must follow GOV.UK Design System standards")
-      buttonText shouldBe "Create Thread"
+      And("the Test User should be able to navigate to Workspace tab available ")
+      WorkspacePage.getWorkspaceTab.getText should include("Workspace")
 
     }
 
+    Scenario("View Thread Information", AcceptanceTests) {
+
+      Given("Test User Logins with Credential ID")
+      AuthLoginPage.login()
+
+      When("the dashboard page loads for the Test User")
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+
+      Then("""the thread information details are displayed in a table with title "shared work queue"""")
+      WorkspacePage.getThreadInformationText should include("Shared work queue")
+
+      And("the table has Thread Reference, Related Reference, External Contact, Status, Waiting on and Deadline")
+      WorkspacePage.getThreadReferenceText  shouldBe "Thread reference"
+      WorkspacePage.getRelatedReferenceText shouldBe "Related reference"
+      WorkspacePage.getExternalContactText  shouldBe "External contact"
+      WorkspacePage.getStatusText           shouldBe "Status"
+      WorkspacePage.getWaitingOnText        shouldBe "Waiting on"
+      WorkspacePage.getDeadlineText         shouldBe "Deadline"
+
+    }
+
+    Scenario("View Thread status for for a specific Thread ", AcceptanceTests) {
+
+      Given("Test User Logins with Credential ID")
+      AuthLoginPage.login()
+
+      When("the dashboard page loads for the Test User")
+
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+
+      Then("the Test User views the status for specific Thread Ref No. -THR-2026-0616-0003 ")
+
+      WorkspacePage.getStatusValueText shouldBe "Overdue"
+
+      And("the Test User views the other thread status with priority work")
+
+      WorkspacePage.getStatusValueNeedsAttentionText shouldBe "Needs action"
+
+    }
   }
 }
