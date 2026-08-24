@@ -48,7 +48,7 @@ class XCreateThreadSpec extends BaseSpec {
 
     }
 
-    Scenario("The Test User enters the contact details", SoloTests) {
+    Scenario("The Test User enters the contact details incorrectly and validation message captured", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.login()
@@ -58,7 +58,87 @@ class XCreateThreadSpec extends BaseSpec {
       CreateThreadPage.selectCreateThreadButton()
       CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      Then("the Test User enters the correct details")
+      Then("the Test User does not enter the details and the error message captured")
+
+      CreateThreadPage.enterFirstNameValue("")
+      CreateThreadPage.enterLastNameValue("")
+      CreateThreadPage.enterEmailAddressValue("")
+      CreateThreadPage.enterPhoneNumberValue("")
+      CreateThreadPage.enterNationalInsuranceValue("")
+      CreateThreadPage.selectClickContinueButton()
+      CreateThreadPage.getErrorFirstName               should include("Enter a first name")
+      CreateThreadPage.getErrorLastName                should include("Enter a last name")
+      CreateThreadPage.getErrorEmailAddress            should include("Enter an email address")
+      CreateThreadPage.getErrorPhoneNumber             should include("Enter a mobile number")
+      CreateThreadPage.getErrorNationalInsuranceNumber should include("Enter a National Insurance number")
+
+    }
+
+    Scenario(
+      "The Test User enters the contact details with invalid format for National Insurance Number",
+      AcceptanceTests
+    ) {
+
+      Given("Test User Logins with Credential ID")
+      AuthLoginPage.login()
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+
+      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+      CreateThreadPage.selectCreateThreadButton()
+      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+      And("the Test User enters the incorrect National insurance number")
+      CreateThreadPage.enterFirstNameValue("Steffi")
+      CreateThreadPage.enterLastNameValue("Graf")
+      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+      CreateThreadPage.enterPhoneNumberValue("123456789")
+      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 ")
+
+      And("the Test User enters the no continue button")
+      CreateThreadPage.selectHasRelatedCaseNo()
+      CreateThreadPage.selectClickContinueButton()
+
+      Then("the Test user gets a error message for entering the correct National Insurance number")
+      CreateThreadPage.getErrorNationalInsuranceNumber should include(
+        "Enter a National Insurance number in the correct format, like QQ 12 34 56 C"
+      )
+
+    }
+
+    Scenario("The Test User enters the contact details and clicks no for related case", AcceptanceTests) {
+
+      Given("Test User Logins with Credential ID")
+      AuthLoginPage.login()
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+
+      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+      CreateThreadPage.selectCreateThreadButton()
+      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+      And("the Test User enters the correct details")
+      CreateThreadPage.enterFirstNameValue("Steffi")
+      CreateThreadPage.enterLastNameValue("Graf")
+      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+      CreateThreadPage.enterPhoneNumberValue("123456789")
+      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
+
+      Then("the Test User enters the no continue button")
+      CreateThreadPage.selectHasRelatedCaseNo()
+      CreateThreadPage.selectClickContinueButton()
+
+    }
+
+    Scenario("The Test User enters the contact details and clicks yes for related case", AcceptanceTests) {
+
+      Given("Test User Logins with Credential ID")
+      AuthLoginPage.login()
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+
+      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+      CreateThreadPage.selectCreateThreadButton()
+      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+      And("the Test User enters the correct details")
       CreateThreadPage.enterFirstNameValue("Steffi")
       CreateThreadPage.enterLastNameValue("Graf")
       CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
@@ -69,7 +149,8 @@ class XCreateThreadSpec extends BaseSpec {
       CreateThreadPage.getViewNoExistingCaseText should include(
         "Select Yes if this communication is linked to an existing case"
       )
-      CreateThreadPage.selectHasRelatedCaseNo()
+      CreateThreadPage.selectHasRelatedCaseYes()
+      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
       CreateThreadPage.selectClickContinueButton()
 
     }
