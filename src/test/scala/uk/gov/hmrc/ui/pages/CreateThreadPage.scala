@@ -17,24 +17,123 @@
 package uk.gov.hmrc.ui.pages
 
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
-import org.openqa.selenium.{By, WebElement}
+import org.openqa.selenium.{By, JavascriptExecutor, WebElement}
+import uk.gov.hmrc.domain.{Generator, Nino}
 import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
 
 import java.time.Duration
 import scala.jdk.CollectionConverters.*
+import scala.math.random
 
 object CreateThreadPage extends BasePage {
 
-  val createThreadButtonLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div[1]/a")
-  val introTextLocator: By          = By.xpath("//*[contains(normalize-space(), 'Share Files Securely')]")
+  val createThreadButtonLocator: By    = By.xpath("//*[@id=\"main-content\"]/div/div[1]/a")
+  val introTextLocator: By             = By.xpath("//*[contains(normalize-space(), 'Share Files Securely')]")
+  val createThreadPageTitle: By        = By.xpath("//*[@id=\"main-content\"]/div/div/form/h1")
+  val enterFirstName: By               = By.id("firstName")
+  val enterLastName: By                = By.id("lastName")
+  val enterEmailAddress: By            = By.id("email")
+  val enterPhoneNumber: By             = By.id("phoneNumber")
+  val enterNationalInsuranceNumber: By = By.id("nationalInsuranceNumber")
+  val clickYesExistingCase: By         = By.id("hasRelatedCase")
+  val enterRelatedRefNo: By            = By.id("caseReferenceNumber")
+  val viewNoExistingCase: By           = By.id("hasRelatedCase-hint")
+  val clickNoExistingCase: By          = By.id("hasRelatedCase-no")
+  val clickContinueButton: By          = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
+  val errorFirstName: By               = By.id("firstName-error")
+  val errorLastName: By                = By.id("lastName-error")
+  val errorEmailAddress: By            = By.id("email-error")
+  val errorPhoneNumber: By             = By.id("phoneNumber-error")
+  val errorNationalInsuranceNumber: By = By.id("nationalInsuranceNumber-error")
 
-  private val wait = new WebDriverWait(driver, Duration.ofSeconds(10))
+  private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
   def getCreateThreadButton: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(createThreadButtonLocator))
 
   def getIntroductoryText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getText.trim
+
+  def getViewNoExistingCaseText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(viewNoExistingCase)).getText.trim
+
+  def getCreateThreadPageTitleText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(createThreadPageTitle)).getText.trim
+
+  def getErrorFirstName: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(errorFirstName)).getText.trim
+
+  def getErrorLastName: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(errorLastName)).getText.trim
+
+  def getErrorEmailAddress: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(errorEmailAddress)).getText.trim
+
+  def getErrorPhoneNumber: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(errorPhoneNumber)).getText.trim
+
+  def getErrorNationalInsuranceNumber: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(errorNationalInsuranceNumber)).getText.trim
+
+  def getEnterFirstNameInput: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(enterFirstName))
+
+  def getEnterLastNameInput: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(enterLastName))
+
+  def getEnterEmailInput: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(enterEmailAddress))
+
+  def getEnterPhoneNumberInput: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(enterPhoneNumber))
+
+  def getEnterNationalInsuranceNumberInput: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(enterNationalInsuranceNumber))
+
+  def getEnterRelatedRefNoInput: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(enterRelatedRefNo))
+
+  def getClickYesExistingCaseInput: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(clickYesExistingCase))
+
+  def getContinueButtonInput: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(clickContinueButton))
+
+  def enterFirstNameValue(value: String): Unit = {
+    val input = getEnterFirstNameInput
+    input.clear()
+    input.sendKeys(value)
+  }
+
+  def enterLastNameValue(value: String): Unit = {
+    val input = getEnterLastNameInput
+    input.clear()
+    input.sendKeys(value)
+  }
+
+  def enterEmailAddressValue(value: String): Unit = {
+    val input = getEnterEmailInput
+    input.clear()
+    input.sendKeys(value)
+  }
+
+  def enterPhoneNumberValue(value: String): Unit = {
+    val input = getEnterPhoneNumberInput
+    input.clear()
+    input.sendKeys(value)
+  }
+
+  def enterNationalInsuranceValue(value: String): Unit = {
+    val input = getEnterNationalInsuranceNumberInput
+    input.clear()
+    input.sendKeys(value)
+  }
+
+  def enterRelatedRefNoValue(value: String): Unit = {
+    val input = getEnterRelatedRefNoInput
+    input.clear()
+    input.sendKeys(value)
+  }
 
   def isCreateThreadButtonDisplayed: Boolean =
     driver.findElements(createThreadButtonLocator).asScala.nonEmpty &&
@@ -49,9 +148,88 @@ object CreateThreadPage extends BasePage {
   def selectCreateThreadButton(): Unit =
     getCreateThreadButton.click()
 
+  def selectClickYesButton(): Unit =
+    getClickYesExistingCaseInput.click()
+
+  def selectClickContinueButton(): Unit =
+    getContinueButtonInput.click()
+
   def isIntroTextDisplayedBeforeButton: Boolean = {
     val introLocation  = wait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getLocation
     val buttonLocation = getCreateThreadButton.getLocation
     introLocation.getY < buttonLocation.getY
   }
+
+  def getClickNoExistingCaseInput: Boolean = {
+    val radioElement = wait.until(
+      ExpectedConditions.visibilityOfElementLocated(clickNoExistingCase)
+    )
+
+    val radioLocation = radioElement.getLocation
+    val radioSize     = radioElement.getSize
+    Thread.sleep(500)
+    // Check if visible and has proper dimensions
+    radioElement.isDisplayed &&
+    radioSize.getWidth > 0 &&
+    radioSize.getHeight > 0 &&
+    radioLocation.getY > 0
+  }
+
+  def selectHasRelatedCaseNo(): Unit = {
+    val radioElement = wait.until(
+      ExpectedConditions.presenceOfElementLocated(clickNoExistingCase)
+    )
+
+    // Scroll into view
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", radioElement)
+
+    Thread.sleep(500)
+
+    // Click using JavaScript as fallback
+    try
+      radioElement.click()
+    catch {
+      case _: Exception =>
+        jsExecutor.executeScript("arguments[0].click();", radioElement)
+    }
+
+  }
+
+  def getClickHasRelatedCaseInput: Boolean = {
+    val radioElement = wait.until(
+      ExpectedConditions.visibilityOfElementLocated(clickYesExistingCase)
+    )
+
+    val radioLocation = radioElement.getLocation
+    val radioSize     = radioElement.getSize
+    Thread.sleep(500)
+
+    // Check if visible and has proper dimensions
+    radioElement.isDisplayed &&
+    radioSize.getWidth > 0 &&
+    radioSize.getHeight > 0 &&
+    radioLocation.getY > 0
+  }
+
+  def selectHasRelatedCaseYes(): Unit = {
+    val radioElement = wait.until(
+      ExpectedConditions.presenceOfElementLocated(clickYesExistingCase)
+    )
+
+    // Scroll into view
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", radioElement)
+
+    Thread.sleep(500)
+
+    // Click using JavaScript as fallback
+    try
+      radioElement.click()
+    catch {
+      case _: Exception =>
+        jsExecutor.executeScript("arguments[0].click();", radioElement)
+    }
+  }
+
 }
