@@ -51,7 +51,6 @@ object CreateThreadPage extends BasePage {
   val addMessageDetails: By            = By.id("message")
   val clickSubmitButton: By            = By.cssSelector("#main-content > div > div > form > button")
   val remainingCharactersLeft: By      = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[2]/div[3]")
-  val backLinkPage: By                 = By.xpath("//a[@class='govuk-back-link' and @data-module='hmrc-back-link']")
   val overTheLimitCharLink: By         = By.xpath("//a[@href='#message' and contains(text(), 'Message must be')]")
   val overTheLimitCharMessage: By      = By.cssSelector("p#message-error.govuk-error-message")
 
@@ -116,9 +115,6 @@ object CreateThreadPage extends BasePage {
 
   def getSubmitButtonInput: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(clickSubmitButton))
-
-  def getBackLinkPage: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(backLinkPage))
 
   def enterMessageDetails(value: String): Unit = {
     val input = getMessageDetails
@@ -205,11 +201,9 @@ object CreateThreadPage extends BasePage {
       ExpectedConditions.presenceOfElementLocated(overTheLimitCharMessage)
     )
 
-    // Scroll into view
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", errorMessage)
 
-    // Get the error message text
     val messageText = errorMessage.getText
 
     messageText
@@ -230,22 +224,6 @@ object CreateThreadPage extends BasePage {
         jsExecutor.executeScript("arguments[0].click();", errorMessageLink)
     }
 
-  }
-
-  def clickBackLink(): Unit = {
-    val backLinkElement = wait.until(
-      ExpectedConditions.visibilityOfElementLocated(backLinkPage)
-    )
-
-    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
-    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", backLinkElement)
-
-    try
-      backLinkElement.click()
-    catch {
-      case _: Exception =>
-        jsExecutor.executeScript("arguments[0].click();", backLinkElement)
-    }
   }
 
   def getClickNoExistingCaseInput: Boolean = {
