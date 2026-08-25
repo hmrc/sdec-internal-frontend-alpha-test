@@ -39,12 +39,20 @@ object CreateThreadPage extends BasePage {
   val enterRelatedRefNo: By            = By.id("caseReferenceNumber")
   val viewNoExistingCase: By           = By.id("hasRelatedCase-hint")
   val clickNoExistingCase: By          = By.id("hasRelatedCase-no")
-  val clickContinueButton: By          = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
+  val clickContinueButton: By          = By.cssSelector(
+    "button.govuk-button[type='submit'][data-module='govuk-button']"
+  )
   val errorFirstName: By               = By.id("firstName-error")
   val errorLastName: By                = By.id("lastName-error")
   val errorEmailAddress: By            = By.id("email-error")
   val errorPhoneNumber: By             = By.id("phoneNumber-error")
   val errorNationalInsuranceNumber: By = By.id("nationalInsuranceNumber-error")
+  val threadDetailPageTitle: By        = By.xpath("//*[@id=\"main-content\"]/div/div/form/h1")
+  val addMessageDetails: By            = By.id("message")
+  val clickSubmitButton: By            = By.cssSelector("#main-content > div > div > form > button")
+  val remainingCharactersLeft: By      = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[2]/div[3]")
+  val overTheLimitCharLink: By         = By.xpath("//a[@href='#message' and contains(text(), 'Message must be')]")
+  val overTheLimitCharMessage: By      = By.cssSelector("p#message-error.govuk-error-message")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
@@ -53,6 +61,12 @@ object CreateThreadPage extends BasePage {
 
   def getIntroductoryText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getText.trim
+
+  def getRemainingCharacterCountDisplayed: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(remainingCharactersLeft)).getText.trim
+
+  def getThreadDetailPageText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(threadDetailPageTitle)).getText.trim
 
   def getViewNoExistingCaseText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(viewNoExistingCase)).getText.trim
@@ -75,6 +89,9 @@ object CreateThreadPage extends BasePage {
   def getErrorNationalInsuranceNumber: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(errorNationalInsuranceNumber)).getText.trim
 
+  def getMessageDetails: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(addMessageDetails))
+
   def getEnterFirstNameInput: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(enterFirstName))
 
@@ -96,8 +113,14 @@ object CreateThreadPage extends BasePage {
   def getClickYesExistingCaseInput: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(clickYesExistingCase))
 
-  def getContinueButtonInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(clickContinueButton))
+  def getSubmitButtonInput: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(clickSubmitButton))
+
+  def enterMessageDetails(value: String): Unit = {
+    val input = getMessageDetails
+    input.clear()
+    input.sendKeys(value)
+  }
 
   def enterFirstNameValue(value: String): Unit = {
     val input = getEnterFirstNameInput
@@ -148,16 +171,59 @@ object CreateThreadPage extends BasePage {
   def selectCreateThreadButton(): Unit =
     getCreateThreadButton.click()
 
+  def selectSubmitMessageDetailsButton(): Unit =
+    getSubmitButtonInput.click()
+
   def selectClickYesButton(): Unit =
     getClickYesExistingCaseInput.click()
 
-  def selectClickContinueButton(): Unit =
-    getContinueButtonInput.click()
+  def selectContinueButton(): Unit = {
+    val continueButton = wait.until(
+      ExpectedConditions.elementToBeClickable(clickContinueButton)
+    )
+
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", continueButton)
+
+    wait.until(ExpectedConditions.elementToBeClickable(continueButton))
+
+    jsExecutor.executeScript("arguments[0].click();", continueButton)
+  }
 
   def isIntroTextDisplayedBeforeButton: Boolean = {
     val introLocation  = wait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getLocation
     val buttonLocation = getCreateThreadButton.getLocation
     introLocation.getY < buttonLocation.getY
+  }
+
+  def errorMessageText(): String = {
+    val errorMessage = wait.until(
+      ExpectedConditions.presenceOfElementLocated(overTheLimitCharMessage)
+    )
+
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", errorMessage)
+
+    val messageText = errorMessage.getText
+
+    messageText
+  }
+
+  def clickErrorMessageLink(): Unit = {
+    val errorMessageLink = wait.until(
+      ExpectedConditions.visibilityOfElementLocated(overTheLimitCharLink)
+    )
+
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", errorMessageLink)
+
+    try
+      errorMessageLink.click()
+    catch {
+      case _: Exception =>
+        jsExecutor.executeScript("arguments[0].click();", errorMessageLink)
+    }
+
   }
 
   def getClickNoExistingCaseInput: Boolean = {
@@ -167,8 +233,7 @@ object CreateThreadPage extends BasePage {
 
     val radioLocation = radioElement.getLocation
     val radioSize     = radioElement.getSize
-    Thread.sleep(500)
-    // Check if visible and has proper dimensions
+
     radioElement.isDisplayed &&
     radioSize.getWidth > 0 &&
     radioSize.getHeight > 0 &&
@@ -180,13 +245,9 @@ object CreateThreadPage extends BasePage {
       ExpectedConditions.presenceOfElementLocated(clickNoExistingCase)
     )
 
-    // Scroll into view
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", radioElement)
 
-    Thread.sleep(500)
-
-    // Click using JavaScript as fallback
     try
       radioElement.click()
     catch {
@@ -203,9 +264,7 @@ object CreateThreadPage extends BasePage {
 
     val radioLocation = radioElement.getLocation
     val radioSize     = radioElement.getSize
-    Thread.sleep(500)
 
-    // Check if visible and has proper dimensions
     radioElement.isDisplayed &&
     radioSize.getWidth > 0 &&
     radioSize.getHeight > 0 &&
@@ -217,13 +276,9 @@ object CreateThreadPage extends BasePage {
       ExpectedConditions.presenceOfElementLocated(clickYesExistingCase)
     )
 
-    // Scroll into view
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", radioElement)
 
-    Thread.sleep(500)
-
-    // Click using JavaScript as fallback
     try
       radioElement.click()
     catch {
