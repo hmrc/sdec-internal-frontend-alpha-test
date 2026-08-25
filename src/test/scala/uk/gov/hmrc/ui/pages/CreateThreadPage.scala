@@ -39,7 +39,9 @@ object CreateThreadPage extends BasePage {
   val enterRelatedRefNo: By            = By.id("caseReferenceNumber")
   val viewNoExistingCase: By           = By.id("hasRelatedCase-hint")
   val clickNoExistingCase: By          = By.id("hasRelatedCase-no")
-  val clickContinueButton: By          = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
+  val clickContinueButton: By          = By.cssSelector(
+    "button.govuk-button[type='submit'][data-module='govuk-button']"
+  )
   val errorFirstName: By               = By.id("firstName-error")
   val errorLastName: By                = By.id("lastName-error")
   val errorEmailAddress: By            = By.id("email-error")
@@ -51,7 +53,7 @@ object CreateThreadPage extends BasePage {
   val remainingCharactersLeft: By      = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[2]/div[3]")
   val backLinkPage: By                 = By.xpath("//a[@class='govuk-back-link' and @data-module='hmrc-back-link']")
   val overTheLimitCharLink: By         = By.xpath("//a[@href='#message' and contains(text(), 'Message must be')]")
-  val overTheLimitCharMessage: By      = By.xpath("//span[@class='govuk-visually-hidden' and text()='Error:']")
+  val overTheLimitCharMessage: By      = By.cssSelector("p#message-error.govuk-error-message")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
@@ -111,9 +113,6 @@ object CreateThreadPage extends BasePage {
 
   def getClickYesExistingCaseInput: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(clickYesExistingCase))
-
-  def getContinueButtonInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(clickContinueButton))
 
   def getSubmitButtonInput: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(clickSubmitButton))
@@ -182,8 +181,18 @@ object CreateThreadPage extends BasePage {
   def selectClickYesButton(): Unit =
     getClickYesExistingCaseInput.click()
 
-  def selectClickContinueButton(): Unit =
-    getContinueButtonInput.click()
+  def selectContinueButton(): Unit = {
+    val continueButton = wait.until(
+      ExpectedConditions.elementToBeClickable(clickContinueButton)
+    )
+
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", continueButton)
+
+    wait.until(ExpectedConditions.elementToBeClickable(continueButton))
+
+    jsExecutor.executeScript("arguments[0].click();", continueButton)
+  }
 
   def isIntroTextDisplayedBeforeButton: Boolean = {
     val introLocation  = wait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getLocation
@@ -191,19 +200,19 @@ object CreateThreadPage extends BasePage {
     introLocation.getY < buttonLocation.getY
   }
 
-  def getOverTheLimitCharErrorMessage(): String = {
-    val errorSpan = wait.until(
-      ExpectedConditions.visibilityOfElementLocated(overTheLimitCharMessage)
+  def errorMessageText(): String = {
+    val errorMessage = wait.until(
+      ExpectedConditions.presenceOfElementLocated(overTheLimitCharMessage)
     )
 
+    // Scroll into view
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
-    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", errorSpan)
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", errorMessage)
 
-    Thread.sleep(500)
+    // Get the error message text
+    val messageText = errorMessage.getText
 
-    val errorMessage = errorSpan.getText()
-
-    errorMessage
+    messageText
   }
 
   def clickErrorMessageLink(): Unit = {
@@ -213,8 +222,6 @@ object CreateThreadPage extends BasePage {
 
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", errorMessageLink)
-
-    Thread.sleep(500)
 
     try
       errorMessageLink.click()
@@ -233,8 +240,6 @@ object CreateThreadPage extends BasePage {
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", backLinkElement)
 
-    Thread.sleep(500)
-
     try
       backLinkElement.click()
     catch {
@@ -250,7 +255,6 @@ object CreateThreadPage extends BasePage {
 
     val radioLocation = radioElement.getLocation
     val radioSize     = radioElement.getSize
-    Thread.sleep(500)
 
     radioElement.isDisplayed &&
     radioSize.getWidth > 0 &&
@@ -265,8 +269,6 @@ object CreateThreadPage extends BasePage {
 
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", radioElement)
-
-    Thread.sleep(500)
 
     try
       radioElement.click()
@@ -284,7 +286,6 @@ object CreateThreadPage extends BasePage {
 
     val radioLocation = radioElement.getLocation
     val radioSize     = radioElement.getSize
-    Thread.sleep(500)
 
     radioElement.isDisplayed &&
     radioSize.getWidth > 0 &&
@@ -299,8 +300,6 @@ object CreateThreadPage extends BasePage {
 
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", radioElement)
-
-    Thread.sleep(500)
 
     try
       radioElement.click()
