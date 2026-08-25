@@ -105,7 +105,10 @@ class XCreateThreadSpec extends BaseSpec {
 
     }
 
-    Scenario("The Test User enters the contact details and clicks no for related case", AcceptanceTests) {
+    Scenario(
+      "The Test User enters the contact details and adds message details with character limit and no related case",
+      AcceptanceTests
+    ) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.login()
@@ -125,6 +128,89 @@ class XCreateThreadSpec extends BaseSpec {
       Then("the Test User enters the no continue button")
       CreateThreadPage.selectHasRelatedCaseNo()
       CreateThreadPage.selectClickContinueButton()
+
+      And("the Test User adds a message to the external user within the character limit available")
+      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
+      CreateThreadPage.enterMessageDetails(
+        "Lorem ipsum dolor sit amet, " +
+          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
+          "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
+          "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
+          "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
+          "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
+          "dictum felis eu pede mollis pretium. Integer tincidunt. " +
+          "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
+          "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
+          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+      )
+      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
+      CreateThreadPage.selectSubmitMessageDetailsButton()
+
+      And("the Test User clicks the back button to view the message and add a new line")
+      CreateThreadPage.clickBackLink()
+      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
+      CreateThreadPage.enterMessageDetails(
+        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit." +
+          " Aenean commodo ligula eget dolor. " +
+          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
+          "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, " +
+          "pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel," +
+          " aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, " +
+          "justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi."
+      )
+      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 467 characters remaining")
+      CreateThreadPage.selectSubmitMessageDetailsButton()
+    }
+
+    Scenario(
+      "The Test User enters the contact details and adds message details with character limit exceeded and no related case",
+      AcceptanceTests,
+
+    ) {
+
+      Given("Test User Logins with Credential ID")
+      AuthLoginPage.login()
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+
+      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+      CreateThreadPage.selectCreateThreadButton()
+      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+      And("the Test User enters the correct details")
+      CreateThreadPage.enterFirstNameValue("Steffi")
+      CreateThreadPage.enterLastNameValue("Graf")
+      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+      CreateThreadPage.enterPhoneNumberValue("123456789")
+      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
+
+      And("the Test User enters the no continue button")
+      CreateThreadPage.selectHasRelatedCaseNo()
+      CreateThreadPage.selectClickContinueButton()
+
+      And(
+        "the Test User adds a message to the external user exceeded the character limit available and user tries to submit"
+      )
+      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
+      CreateThreadPage.enterMessageDetails(
+        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum " +
+          "sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies " +
+          "nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla " +
+          "vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. " +
+          "Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper " +
+          "nisiLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. " +
+          "Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
+          "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, " +
+          "venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. " +
+          "Vivamus elementum semper nisi."
+      )
+      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 65 characters too many")
+      CreateThreadPage.selectSubmitMessageDetailsButton()
+
+      And("the Test User gets an error message which is captured")
+      CreateThreadPage.clickErrorMessageLink()
+      CreateThreadPage.getOverTheLimitCharErrorMessage()
 
     }
 
