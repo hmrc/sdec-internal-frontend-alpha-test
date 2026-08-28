@@ -53,6 +53,9 @@ object CreateThreadPage extends BasePage {
   val remainingCharactersLeft: By      = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[2]/div[3]")
   val overTheLimitCharLink: By         = By.xpath("//a[@href='#message' and contains(text(), 'Message must be')]")
   val overTheLimitCharMessage: By      = By.cssSelector("p#message-error.govuk-error-message")
+  val dayPartOfDate: By                = By.id("responseDate-responseDate.day")
+  val monthPartOfDate: By              = By.id("responseDate-responseDate.month")
+  val yearPartOfDate: By               = By.id("responseDate-responseDate.year")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
@@ -115,6 +118,33 @@ object CreateThreadPage extends BasePage {
 
   def getSubmitButtonInput: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(clickSubmitButton))
+
+  def dayPartOfDateElement: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(dayPartOfDate))
+
+  def monthPartOfDateElement: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(monthPartOfDate))
+
+  def yearPartOfDateElement: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(yearPartOfDate))
+
+  def enterDayPartOfDate(value: String): Unit = {
+    val input = dayPartOfDateElement
+    input.clear()
+    input.sendKeys(value)
+  }
+
+  def enterMonthPartOfDate(value: String): Unit = {
+    val input = monthPartOfDateElement
+    input.clear()
+    input.sendKeys(value)
+  }
+
+  def enterYearPartOfDate(value: String): Unit = {
+    val input = yearPartOfDateElement
+    input.clear()
+    input.sendKeys(value)
+  }
 
   def enterMessageDetails(value: String): Unit = {
     val input = getMessageDetails
