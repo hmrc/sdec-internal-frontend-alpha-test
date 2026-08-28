@@ -20,8 +20,6 @@ import org.scalatest.featurespec.AnyFeatureSpec
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, CheckYourAnswersPage, CreateThreadPage, WorkspacePage}
 import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 
-
-
 class YCheckYourAnswersSpec extends BaseSpec {
   Feature("Internal User Journey - Check Your Answers Page") {
 

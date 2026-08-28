@@ -35,7 +35,7 @@ object CheckYourAnswersPage extends BasePage {
   val verifyDateUpdate: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[2]/dd[1]")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
-  
+
   def getNameUpdateText: String = {
     val nameElement = wait.until(
       ExpectedConditions.presenceOfElementLocated(verifyNameUpdate)

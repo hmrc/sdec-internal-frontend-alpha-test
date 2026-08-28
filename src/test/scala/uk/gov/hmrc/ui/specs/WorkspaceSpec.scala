@@ -20,7 +20,6 @@ import org.scalatest.featurespec.AnyFeatureSpec
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, WorkspacePage}
 import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
 
-
 class WorkspaceSpec extends BaseSpec {
   Feature("Internal User Journey - Workspace ") {
 
