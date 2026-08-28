@@ -16,13 +16,11 @@
 
 package uk.gov.hmrc.ui.specs
 
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
-import uk.gov.hmrc.ui.pages.CreateThreadPage.getClickNoExistingCaseInput
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, CheckYourAnswersPage, CreateThreadPage, WorkspacePage}
 import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 
-import java.time.Duration
+
 
 class YCheckYourAnswersSpec extends BaseSpec {
   Feature("Internal User Journey - Check Your Answers Page") {
@@ -106,7 +104,7 @@ class YCheckYourAnswersSpec extends BaseSpec {
 
     }
 
-    Scenario("The Test User successfully amends the date in check your Answers page", AcceptanceTests, SoloTests) {
+    Scenario("The Test User successfully amends the date in check your Answers page", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.login()
@@ -128,7 +126,7 @@ class YCheckYourAnswersSpec extends BaseSpec {
       CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
       CreateThreadPage.selectContinueButton()
 
-      Then("the Test User adds a message to the external user within the character limit available")
+      Then("the Test User edits the date of reply and verifies the updated date in check your answers")
       CreateThreadPage.getCreateThreadPageTitleText     shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +

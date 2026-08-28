@@ -19,7 +19,6 @@ package uk.gov.hmrc.ui.pages
 import org.openqa.selenium.{By, WebElement}
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
-import scala.jdk.CollectionConverters.*
 import java.time.Duration
 
 object WorkspacePage extends BasePage {

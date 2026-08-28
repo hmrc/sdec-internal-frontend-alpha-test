@@ -23,7 +23,6 @@ import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
 
 import java.time.Duration
 import scala.jdk.CollectionConverters.*
-import scala.math.random
 
 object CreateThreadPage extends BasePage {
 

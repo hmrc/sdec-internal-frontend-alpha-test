@@ -16,18 +16,15 @@
 
 package uk.gov.hmrc.ui.specs
 
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
-import uk.gov.hmrc.ui.pages.CreateThreadPage.getClickNoExistingCaseInput
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, CreateThreadPage, WorkspacePage}
 import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 
-import java.time.Duration
 
 class XCreateThreadSpec extends BaseSpec {
   Feature("Internal User Journey - Create Thread page") {
 
-    Scenario("Create Thread Button is visible and must be selectable", AcceptanceTests) {
+    Scenario("Create Thread Button is visible and must be selectable", SoloTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.login()
@@ -48,7 +45,7 @@ class XCreateThreadSpec extends BaseSpec {
 
     }
 
-    Scenario("The Test User enters the contact details incorrectly and validation message captured", AcceptanceTests) {
+    Scenario("The Test User enters the contact details incorrectly and validation message captured", SoloTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.login()
@@ -76,7 +73,7 @@ class XCreateThreadSpec extends BaseSpec {
 
     Scenario(
       "The Test User enters the contact details with invalid format for National Insurance Number",
-      AcceptanceTests
+      SoloTests
     ) {
 
       Given("Test User Logins with Credential ID")
@@ -107,7 +104,7 @@ class XCreateThreadSpec extends BaseSpec {
 
     Scenario(
       "The Test User enters the contact details and adds message details with character limit and yes related case",
-      AcceptanceTests
+      SoloTests
     ) {
 
       Given("Test User Logins with Credential ID")
@@ -123,7 +120,7 @@ class XCreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterLastNameValue("Graf")
       CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
       CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
+      CreateThreadPage.enterNationalInsuranceValue(" CC 67 55 80 C")
 
       Then("the Test User enters the no continue button")
       CreateThreadPage.selectHasRelatedCaseYes()
@@ -152,7 +149,7 @@ class XCreateThreadSpec extends BaseSpec {
 
     Scenario(
       "The Test User enters the contact details and adds message details with character limit exceeded and no related case",
-      AcceptanceTests
+      SoloTests
     ) {
 
       Given("Test User Logins with Credential ID")
@@ -168,7 +165,7 @@ class XCreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterLastNameValue("Graf")
       CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
       CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
+      CreateThreadPage.enterNationalInsuranceValue(" CC 67 55 80 C")
 
       And("the Test User enters the no continue button")
       CreateThreadPage.selectHasRelatedCaseNo()
@@ -201,7 +198,7 @@ class XCreateThreadSpec extends BaseSpec {
       errorMessage should include("Message must be 1,000 characters or less. You have 65 characters too many")
     }
 
-    Scenario("The Test User enters the contact details and clicks yes for related case", AcceptanceTests) {
+    Scenario("The Test User enters the contact details and clicks yes for related case", SoloTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.login()
