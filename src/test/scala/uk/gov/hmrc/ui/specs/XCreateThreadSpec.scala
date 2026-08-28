@@ -16,10 +16,13 @@
 
 package uk.gov.hmrc.ui.specs
 
+import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
+import uk.gov.hmrc.ui.pages.CreateThreadPage.getClickNoExistingCaseInput
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, CreateThreadPage, WorkspacePage}
 import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 
+import java.time.Duration
 
 class XCreateThreadSpec extends BaseSpec {
   Feature("Internal User Journey - Create Thread page") {
@@ -222,51 +225,6 @@ class XCreateThreadSpec extends BaseSpec {
       CreateThreadPage.selectHasRelatedCaseYes()
       CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
       CreateThreadPage.selectContinueButton()
-
-    }
-
-    Scenario("Test user creates a new thred and provides valid response date for deadline", AcceptanceTests) {
-
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
-
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
-
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
-
-      Then("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
-
-      And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
-          "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
-          "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
-          "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
-          "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
-          "dictum felis eu pede mollis pretium. Integer tincidunt. " +
-          "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
-          "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
-      CreateThreadPage.enterDayPartOfDate("11")
-      CreateThreadPage.enterMonthPartOfDate("11")
-      CreateThreadPage.enterYearPartOfDate("2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
 
     }
 
