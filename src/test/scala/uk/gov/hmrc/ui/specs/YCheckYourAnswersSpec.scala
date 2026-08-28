@@ -54,9 +54,9 @@ class YCheckYourAnswersSpec extends BaseSpec {
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
           "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
       )
-      CheckYourAnswersPage.enterDayDateValue("12")
-      CheckYourAnswersPage.enterMonthDateValue("12")
-      CheckYourAnswersPage.enterYearDateValue("2026")
+      CreateThreadPage.enterDayPartOfDate("11")
+      CreateThreadPage.enterMonthPartOfDate("11")
+      CreateThreadPage.enterYearPartOfDate("2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.selectConfirmAndSendButton()
     }
@@ -90,9 +90,9 @@ class YCheckYourAnswersSpec extends BaseSpec {
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
           "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
       )
-      CheckYourAnswersPage.enterDayDateValue("12")
-      CheckYourAnswersPage.enterMonthDateValue("12")
-      CheckYourAnswersPage.enterYearDateValue("2026")
+      CreateThreadPage.enterDayPartOfDate("11")
+      CreateThreadPage.enterMonthPartOfDate("11")
+      CreateThreadPage.enterYearPartOfDate("2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.selectWhoAreYouContactingLink()
       CreateThreadPage.getCreateThreadPageTitleText   should include("Who are you contacting?")
@@ -133,16 +133,16 @@ class YCheckYourAnswersSpec extends BaseSpec {
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
           "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
       )
-      CheckYourAnswersPage.enterDayDateValue("01")
-      CheckYourAnswersPage.enterMonthDateValue("01")
-      CheckYourAnswersPage.enterYearDateValue("2027")
+      CreateThreadPage.enterDayPartOfDate("11")
+      CreateThreadPage.enterMonthPartOfDate("11")
+      CreateThreadPage.enterYearPartOfDate("2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.selectThreadDetailsLink()
       CreateThreadPage.getCreateThreadPageTitleText     shouldBe "Thread details"
-      CheckYourAnswersPage.enterMonthDateValue("02")
+      CreateThreadPage.enterMonthPartOfDate("02")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.getCheckYourAnswersTitleText shouldBe "Check your answers"
-      CheckYourAnswersPage.getDateUpdateText            shouldBe "1 February 2027"
+      CheckYourAnswersPage.getDateUpdateText            shouldBe "11 February 2026"
 
     }
 

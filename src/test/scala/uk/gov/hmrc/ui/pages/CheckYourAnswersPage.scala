@@ -31,23 +31,11 @@ object CheckYourAnswersPage extends BasePage {
   val whoAreYouContactingPage: By     = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[2]/a")
   val threadDetailsPage: By           = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[2]/a")
   val checkYourAnswersPage: By        = By.xpath("//*[@id=\"main-content\"]/div[1]/div/h1")
-  val dayReplyDate: By                = By.id("responseDate-responseDate.day")
-  val monthReplyDate: By              = By.id("responseDate-responseDate.month")
-  val yearReplyDate: By               = By.id("responseDate-responseDate.year")
   val verifyNameUpdate: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
   val verifyDateUpdate: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[2]/dd[1]")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
-
-  def getDayReplyDateInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(dayReplyDate))
-
-  def getDayReplyMonthInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(monthReplyDate))
-
-  def getDayReplyYearInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(yearReplyDate))
-
+  
   def getNameUpdateText: String = {
     val nameElement = wait.until(
       ExpectedConditions.presenceOfElementLocated(verifyNameUpdate)
@@ -72,24 +60,6 @@ object CheckYourAnswersPage extends BasePage {
     val dateText = dateElement.getText.trim()
 
     dateText
-  }
-
-  def enterDayDateValue(value: String): Unit = {
-    val input = getDayReplyDateInput
-    input.clear()
-    input.sendKeys(value)
-  }
-
-  def enterMonthDateValue(value: String): Unit = {
-    val input = getDayReplyMonthInput
-    input.clear()
-    input.sendKeys(value)
-  }
-
-  def enterYearDateValue(value: String): Unit = {
-    val input = getDayReplyYearInput
-    input.clear()
-    input.sendKeys(value)
   }
 
   def getCheckYourAnswersTitleText: String = {
