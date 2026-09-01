@@ -56,6 +56,7 @@ object CreateThreadPage extends BasePage {
   val dayPartOfDate: By                = By.id("responseDate-responseDate.day")
   val monthPartOfDate: By              = By.id("responseDate-responseDate.month")
   val yearPartOfDate: By               = By.id("responseDate-responseDate.year")
+  val errormessageResponseDate: By     = By.id("responseDate-error")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
@@ -125,26 +126,23 @@ object CreateThreadPage extends BasePage {
   def monthPartOfDateElement: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(monthPartOfDate))
 
+  def errorMessageResponseDateElement: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(errormessageResponseDate))
+
   def yearPartOfDateElement: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(yearPartOfDate))
 
-  def enterDayPartOfDate(value: String): Unit = {
-    val input = dayPartOfDateElement
-    input.clear()
-    input.sendKeys(value)
+  def enterDate(day: String, month: String, year: String): Unit = {
+    dayPartOfDateElement.clear()
+    dayPartOfDateElement.sendKeys(day)
+    monthPartOfDateElement.clear()
+    monthPartOfDateElement.sendKeys(month)
+    yearPartOfDateElement.clear()
+    yearPartOfDateElement.sendKeys(year)
   }
 
-  def enterMonthPartOfDate(value: String): Unit = {
-    val input = monthPartOfDateElement
-    input.clear()
-    input.sendKeys(value)
-  }
-
-  def enterYearPartOfDate(value: String): Unit = {
-    val input = yearPartOfDateElement
-    input.clear()
-    input.sendKeys(value)
-  }
+  def checkResponseDateErrorMessage(): String =
+    errorMessageResponseDateElement.getText.trim()
 
   def enterMessageDetails(value: String): Unit = {
     val input = getMessageDetails
