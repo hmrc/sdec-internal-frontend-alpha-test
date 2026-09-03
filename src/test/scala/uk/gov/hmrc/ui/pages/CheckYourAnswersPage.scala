@@ -19,6 +19,7 @@ package uk.gov.hmrc.ui.pages
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.openqa.selenium.{By, JavascriptExecutor, WebElement}
 import uk.gov.hmrc.domain.{Generator, Nino}
+import org.openqa.selenium.WebElement
 import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
 
 import java.time.Duration
@@ -33,12 +34,74 @@ object CheckYourAnswersPage extends BasePage {
   val checkYourAnswersPage: By        = By.xpath("//*[@id=\"main-content\"]/div[1]/div/h1")
   val verifyNameUpdate: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
   val verifyDateUpdate: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[2]/dd[1]")
+  val theirNameValue: By              = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
+  val emailAddressValue: By           = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[2]/dd[1]")
+  val mobileNumberValue: By           = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[3]/dd[1]")
+  val niNumberValue: By               = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[4]/dd[1]")
+  val relatedCaseValue: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[5]/dd[1]")
+  val relatedReferenceNumberValue: By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[6]/dd[1]")
+  val messageValue: By                = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[1]/text()")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
   def getNameUpdateText: String = {
     val nameElement = wait.until(
       ExpectedConditions.presenceOfElementLocated(verifyNameUpdate)
+    )
+
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", nameElement)
+
+    val nameText = nameElement.getText.trim()
+
+    nameText
+  }
+
+  def relatedReferenceNumberElements: java.util.List[WebElement] =
+    driver.findElements(relatedReferenceNumberValue)
+
+  def getMessageText: String = {
+    val nameElement = wait.until(
+      ExpectedConditions.presenceOfElementLocated(messageValue)
+    )
+
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", nameElement)
+
+    val nameText = nameElement.getText.trim()
+
+    nameText
+  }
+
+  def getEmailAddressText: String = {
+    val nameElement = wait.until(
+      ExpectedConditions.presenceOfElementLocated(emailAddressValue)
+    )
+
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", nameElement)
+
+    val nameText = nameElement.getText.trim()
+
+    nameText
+  }
+
+  def getMobileNumberText: String = {
+    val nameElement = wait.until(
+      ExpectedConditions.presenceOfElementLocated(mobileNumberValue)
+    )
+
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", nameElement)
+
+    val nameText = nameElement.getText.trim()
+
+    nameText
+  }
+
+  def getNINumberText: String = {
+    val nameElement = wait.until(
+      ExpectedConditions.presenceOfElementLocated(niNumberValue)
     )
 
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
