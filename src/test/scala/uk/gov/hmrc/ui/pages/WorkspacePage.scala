@@ -24,8 +24,19 @@ import java.time.Duration
 
 object WorkspacePage extends BasePage {
 
-  val heading: By                       = By.xpath("/html/body/header/div/div[2]/a")
-  val workspaceTab: By                  = By.xpath("//*[@id=\"navigation\"]/li[2]/a")
+  val heading: By                      = By.xpath("/html/body/header/div/div[2]/a")
+  val workspaceTab: By                 = By.xpath("//*[@id=\"navigation\"]/li[2]/a")
+  val firstThreadReferenceLocator: By  = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/th/a")
+  val firstRelatedReferenceLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[1]")
+  val firstExternalContactLocator: By  = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[2]/a")
+  val firstStatusLocator: By           = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[3]")
+  val firstWaitingOnLocator: By        = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[4]")
+  val threadReferenceLocator: By       = By.xpath("//*[@id=\"main-content\"]/div/dl/div[1]/dd")
+  val relatedReferenceLocator: By      = By.xpath("//*[@id=\"main-content\"]/div/dl/div[2]/dd")
+  val externalContactLocator: By       = By.xpath("//*[@id=\"main-content\"]/div/dl/div[3]/dd")
+  val statusLocator: By                = By.xpath("//*[@id=\"main-content\"]/div/dl/div[4]/dd")
+  val waitingOnLocator: By             = By.xpath("//*[@id=\"main-content\"]/div/dl/div[5]/dd")
+
   val threadInformationText: By         = By.xpath("//*[@id=\"main-content\"]/div/h2")
   val threadReferenceText: By           = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[1]")
   val relatedReferenceText: By          = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[2]")
@@ -41,6 +52,21 @@ object WorkspacePage extends BasePage {
 
   def getStatusValueText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(statusValueText)).getText.trim
+
+  def getThreadReferenceValue: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceLocator)).getText.trim
+
+  def getRelatedReferenceValue: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(relatedReferenceLocator)).getText.trim
+
+  def getExternalContactValue: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(externalContactLocator)).getText.trim
+
+  def getStatusValue: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(statusLocator)).getText.trim
+
+  def getWaitingOnValue: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(waitingOnLocator)).getText.trim
 
   def getStatusValueNeedsAttentionText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(statusValueNeedsAttentionText)).getText.trim
@@ -69,5 +95,39 @@ object WorkspacePage extends BasePage {
   def getHeading: WebElement = wait.until(ExpectedConditions.visibilityOfElementLocated(heading))
 
   def getWorkspaceTab: WebElement = wait.until(ExpectedConditions.visibilityOfElementLocated(workspaceTab))
+
+  def firstThreadReferenceElement: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(firstThreadReferenceLocator))
+
+  def selectFirstThreadReference(): Unit =
+    firstThreadReferenceElement.click()
+
+  def getThreadDetails: List[String] = {
+    val firstThreadReferenceText: String =
+      wait.until(ExpectedConditions.visibilityOfElementLocated(firstThreadReferenceLocator)).getText.trim
+
+    val firstRelatedReferenceText: String =
+      wait.until(ExpectedConditions.visibilityOfElementLocated(firstRelatedReferenceLocator)).getText.trim
+
+    val firstExternalContactText: String =
+      wait.until(ExpectedConditions.visibilityOfElementLocated(firstExternalContactLocator)).getText.trim
+
+    val firstStatusText: String =
+      wait.until(ExpectedConditions.visibilityOfElementLocated(firstStatusLocator)).getText.trim
+
+    val firstWaitingOnText: String =
+      wait.until(ExpectedConditions.visibilityOfElementLocated(firstWaitingOnLocator)).getText.trim
+
+    val threadDetails: List[String] = List(
+      firstThreadReferenceText,
+      firstRelatedReferenceText,
+      firstExternalContactText,
+      firstStatusText,
+      firstWaitingOnText
+    )
+
+    threadDetails.foreach(println)
+    threadDetails
+  }
 
 }
