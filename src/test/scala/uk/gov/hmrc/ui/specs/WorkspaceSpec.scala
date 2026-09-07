@@ -19,7 +19,7 @@ package uk.gov.hmrc.ui.specs
 import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, WorkspacePage}
-import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
+import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 
 import java.time.Duration
 
@@ -80,5 +80,27 @@ class WorkspaceSpec extends BaseSpec {
       WorkspacePage.getStatusValueNeedsAttentionText shouldBe "Needs action"
 
     }
+
+    Scenario("Test user opens an active thread and validates and reviews details", AcceptanceTests) {
+
+      Given("Test User Logins with Credential ID")
+      AuthLoginPage.login()
+
+      When("the dashboard page loads for the Test User")
+
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+
+      Then("the Test User selects first active thread")
+      val threadDetails: List[String] = WorkspacePage.getThreadDetails
+      WorkspacePage.selectFirstThreadReference()
+
+      And("the Test User verifies thread details")
+      WorkspacePage.getThreadReferenceValue  should include(threadDetails.head)
+      WorkspacePage.getRelatedReferenceValue should include(threadDetails(1))
+      WorkspacePage.getExternalContactValue  should include(threadDetails(2))
+      WorkspacePage.getStatusValue           should include(threadDetails(3))
+      WorkspacePage.getWaitingOnValue        should include(threadDetails(4))
+    }
+
   }
 }
