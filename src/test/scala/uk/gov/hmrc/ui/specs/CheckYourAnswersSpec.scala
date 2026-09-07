@@ -221,5 +221,83 @@ class CheckYourAnswersSpec extends BaseSpec {
 
     }
 
+    Scenario(
+      "The Test User successfully submits the Check your Answers page  and verifies thread reference number is displayed",
+      AcceptanceTests
+    ) {
+
+      Given("Test User Logins with Credential ID")
+      AuthLoginPage.login()
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+
+      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+      CreateThreadPage.selectCreateThreadButton()
+      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+      And("the Test User enters the correct details")
+      CreateThreadPage.enterFirstNameValue("Steffi")
+      CreateThreadPage.enterLastNameValue("Graf")
+      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+      CreateThreadPage.enterPhoneNumberValue("123456789")
+      CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+
+      And("the Test User enters the no continue button")
+      CreateThreadPage.selectHasRelatedCaseYes()
+      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+      CreateThreadPage.selectContinueButton()
+
+      Then("the Test User adds a message to the external user within the character limit available")
+      CreateThreadPage.getCreateThreadPageTitleText   shouldBe "Thread details"
+      CreateThreadPage.enterMessageDetails(
+        "Lorem ipsum dolor sit amet, " +
+          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+      )
+      CreateThreadPage.enterDate("11", "11", "2026")
+      CreateThreadPage.selectSubmitMessageDetailsButton()
+      CheckYourAnswersPage.selectConfirmAndSendButton()
+      CheckYourAnswersPage.getThreadReferenceNumberText should include("Thread reference number")
+    }
+
+    Scenario(
+      "The Test User successfully submits the Check your Answers page  and verifies response date and status of thread",
+      AcceptanceTests
+    ) {
+
+      Given("Test User Logins with Credential ID")
+      AuthLoginPage.login()
+      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+
+      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+      CreateThreadPage.selectCreateThreadButton()
+      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+      And("the Test User enters the correct details")
+      CreateThreadPage.enterFirstNameValue("Steffi")
+      CreateThreadPage.enterLastNameValue("Graf")
+      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+      CreateThreadPage.enterPhoneNumberValue("123456789")
+      CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+
+      And("the Test User enters the no continue button")
+      CreateThreadPage.selectHasRelatedCaseYes()
+      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+      CreateThreadPage.selectContinueButton()
+
+      Then("the Test User adds a message to the external user within the character limit available")
+      CreateThreadPage.getCreateThreadPageTitleText   shouldBe "Thread details"
+      CreateThreadPage.enterMessageDetails(
+        "Lorem ipsum dolor sit amet, " +
+          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+      )
+      CreateThreadPage.enterDate("11", "11", "2026")
+      CreateThreadPage.selectSubmitMessageDetailsButton()
+      CheckYourAnswersPage.selectConfirmAndSendButton()
+      CheckYourAnswersPage.getThreadReferenceNumberText should include("Thread reference number")
+      CheckYourAnswersPage.getResponseRequiredDateText  should include("11 November 2026")
+      CheckYourAnswersPage.getStatusText                should include("Response Requested")
+    }
+
   }
 }

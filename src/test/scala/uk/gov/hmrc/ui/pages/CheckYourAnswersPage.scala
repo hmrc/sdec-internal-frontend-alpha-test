@@ -26,23 +26,35 @@ import java.time.Duration
 
 object CheckYourAnswersPage extends BasePage {
 
-  val clickConfirmAndSubmitButton: By = By.xpath(
+  val clickConfirmAndSubmitButton: By  = By.xpath(
     "//button[@type='submit' and @class='govuk-button' and @data-module='govuk-button' and contains(text(), 'Confirm and send')]"
   )
-  val whoAreYouContactingPage: By     = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[2]/a")
-  val threadDetailsPage: By           = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[2]/a")
-  val checkYourAnswersPage: By        = By.xpath("//*[@id=\"main-content\"]/div[1]/div/h1")
-  val verifyNameUpdate: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
-  val verifyDateUpdate: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[2]/dd[1]")
-  val theirNameValue: By              = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
-  val emailAddressValue: By           = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[2]/dd[1]")
-  val mobileNumberValue: By           = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[3]/dd[1]")
-  val niNumberValue: By               = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[4]/dd[1]")
-  val relatedCaseValue: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[5]/dd[1]")
-  val relatedReferenceNumberValue: By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[6]/dd[1]")
-  val messageValue: By                = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[1]/text()")
+  val whoAreYouContactingPage: By      = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[2]/a")
+  val threadDetailsPage: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[2]/a")
+  val checkYourAnswersPage: By         = By.xpath("//*[@id=\"main-content\"]/div[1]/div/h1")
+  val verifyNameUpdate: By             = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
+  val verifyDateUpdate: By             = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[2]/dd[1]")
+  val theirNameValue: By               = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
+  val emailAddressValue: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[2]/dd[1]")
+  val mobileNumberValue: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[3]/dd[1]")
+  val niNumberValue: By                = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[4]/dd[1]")
+  val relatedCaseValue: By             = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[5]/dd[1]")
+  val relatedReferenceNumberValue: By  = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[6]/dd[1]")
+  val messageValue: By                 = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[1]/text()")
+  val threadReferenceNumberLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div[1]/span")
+  val responseRequiredDateLocator: By  = By.xpath("//*[@id=\"main-content\"]/div/div[1]/ol/li/div/div/p/strong")
+  val statusLocator: By                = By.xpath("//*[@id=\"main-content\"]/div/div[2]/p[1]")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
+
+  def getThreadReferenceNumberText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceNumberLocator)).getText.trim
+
+  def getResponseRequiredDateText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(responseRequiredDateLocator)).getText.trim
+
+  def getStatusText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(statusLocator)).getText.trim
 
   def getNameUpdateText: String = {
     val nameElement = wait.until(
