@@ -448,7 +448,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterPhoneNumberValue("123456789")
       CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
 
-      Then("the Test User enters the no continue button")
+      Then("the Test User enters the Yes continue button")
       CreateThreadPage.selectHasRelatedCaseYes()
       CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
       CreateThreadPage.selectContinueButton()
