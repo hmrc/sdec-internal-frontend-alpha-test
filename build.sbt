@@ -18,5 +18,10 @@ lazy val root = (project in file("."))
       s"-Dbrowser.option.headless=${sys.props.getOrElse("browser.option.headless", "true")}",
       s"-Dbrowser.usePreviousVersion=${sys.props.getOrElse("browser.usePreviousVersion", "true")}"
     ),
-    Test / parallelExecution := false
+    Test / parallelExecution := false,
+    semanticdbEnabled := true
   )
+
+addCommandAlias("prePrChecks", "; scalafmtCheckAll; scalafmtSbtCheck; scalafixAll --check")
+addCommandAlias("lint", "; scalafmtAll; scalafmtSbt; scalafixAll")
+addCommandAlias("prePush", "; reload; clean; compile; test; lint;")
