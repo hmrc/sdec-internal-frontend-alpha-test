@@ -18,7 +18,7 @@ package uk.gov.hmrc.ui.specs
 
 import org.scalatest.featurespec.AnyFeatureSpec
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, CheckYourAnswersPage, CreateThreadPage, WorkspacePage}
-import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
+import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
 
 class CheckYourAnswersSpec extends BaseSpec {
   Feature("Internal User Journey - Check Your Answers Page") {
@@ -50,7 +50,7 @@ class CheckYourAnswersSpec extends BaseSpec {
       CreateThreadPage.selectContinueButton()
 
       Then("the Test User edits the date of reply and verifies the updated date in check your answers")
-      CreateThreadPage.getCreateThreadPageTitleText     shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
@@ -59,7 +59,7 @@ class CheckYourAnswersSpec extends BaseSpec {
       CreateThreadPage.enterDate("11", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.selectThreadDetailsLink()
-      CreateThreadPage.getCreateThreadPageTitleText     shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterDate("11", "12", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.getCheckYourAnswersTitleText shouldBe "Check your answers"
@@ -133,11 +133,11 @@ class CheckYourAnswersSpec extends BaseSpec {
       )
       CreateThreadPage.enterDate("11", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.getNameUpdateText          should include("Steffi Graf")
-      CheckYourAnswersPage.getEmailAddressText        should include("steffi@abc.com")
-      CheckYourAnswersPage.getMobileNumberText        should include("123456789")
-      CheckYourAnswersPage.getNINumberText            should include("CC 77 45 72 D")
-      CheckYourAnswersPage.getDateUpdateText          should include("11 November 2026")
+      CheckYourAnswersPage.getNameUpdateText   should include("Steffi Graf")
+      CheckYourAnswersPage.getEmailAddressText should include("steffi@abc.com")
+      CheckYourAnswersPage.getMobileNumberText should include("123456789")
+      CheckYourAnswersPage.getNINumberText     should include("CC 77 45 72 D")
+      CheckYourAnswersPage.getDateUpdateText   should include("11 November 2026")
     }
 
     Scenario("The Test User successfully amends the name in who are you contacting page", AcceptanceTests) {
@@ -172,12 +172,12 @@ class CheckYourAnswersSpec extends BaseSpec {
       CreateThreadPage.enterDate("11", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.selectWhoAreYouContactingLink()
-      CreateThreadPage.getCreateThreadPageTitleText   should include("Who are you contacting?")
+      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
       CreateThreadPage.enterFirstNameValue("Sam")
       CreateThreadPage.selectContinueButton()
       CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.getNameUpdateText        shouldBe "Sam Graf"
+      CheckYourAnswersPage.getNameUpdateText shouldBe "Sam Graf"
 
     }
 
@@ -204,7 +204,7 @@ class CheckYourAnswersSpec extends BaseSpec {
       CreateThreadPage.selectContinueButton()
 
       Then("the Test User edits the date of reply and verifies the updated date in check your answers")
-      CreateThreadPage.getCreateThreadPageTitleText     shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
@@ -213,7 +213,7 @@ class CheckYourAnswersSpec extends BaseSpec {
       CreateThreadPage.enterDate("11", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.selectThreadDetailsLink()
-      CreateThreadPage.getCreateThreadPageTitleText     shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterDate("11", "12", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.getCheckYourAnswersTitleText shouldBe "Check your answers"
@@ -286,7 +286,7 @@ class CheckYourAnswersSpec extends BaseSpec {
       CreateThreadPage.selectContinueButton()
 
       Then("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText   shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
