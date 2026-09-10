@@ -22,24 +22,24 @@ import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
 
 object CheckYourAnswersPage extends BasePage {
 
-  val clickConfirmAndSubmitButton: By  = By.xpath(
+  val clickConfirmAndSubmitButton: By = By.xpath(
     "//button[@type='submit' and @class='govuk-button' and @data-module='govuk-button' and contains(text(), 'Confirm and send')]"
   )
-  val whoAreYouContactingPage: By      = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[2]/a")
-  val threadDetailsPage: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[2]/a")
-  val checkYourAnswersPage: By         = By.xpath("//*[@id=\"main-content\"]/div[1]/div/h1")
-  val verifyNameUpdate: By             = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
-  val verifyDateUpdate: By             = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[2]/dd[1]")
-  val theirNameValue: By               = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
-  val emailAddressValue: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[2]/dd[1]")
-  val mobileNumberValue: By            = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[3]/dd[1]")
-  val niNumberValue: By                = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[4]/dd[1]")
-  val relatedCaseValue: By             = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[5]/dd[1]")
-  val relatedReferenceNumberValue: By  = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[6]/dd[1]")
-  val messageValue: By                 = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[1]/text()")
+  val whoAreYouContactingPage:      By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[2]/a")
+  val threadDetailsPage:            By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[2]/a")
+  val checkYourAnswersPage:         By = By.xpath("//*[@id=\"main-content\"]/div[1]/div/h1")
+  val verifyNameUpdate:             By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
+  val verifyDateUpdate:             By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[2]/dd[1]")
+  val theirNameValue:               By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
+  val emailAddressValue:            By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[2]/dd[1]")
+  val mobileNumberValue:            By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[3]/dd[1]")
+  val niNumberValue:                By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[4]/dd[1]")
+  val relatedCaseValue:             By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[5]/dd[1]")
+  val relatedReferenceNumberValue:  By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[6]/dd[1]")
+  val messageValue:                 By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[1]/text()")
   val threadReferenceNumberLocator: By = By.cssSelector(".govuk-caption-l")
-  val responseRequiredDateLocator: By  = By.cssSelector("p.govuk-body strong")
-  val statusLocator: By                = By.cssSelector("h2.hmrc-timeline__event-title")
+  val responseRequiredDateLocator:  By = By.cssSelector("p.govuk-body strong")
+  val statusLocator:                By = By.cssSelector("h2.hmrc-timeline__event-title")
 
   def getThreadReferenceNumberText: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceNumberLocator)).getText.trim

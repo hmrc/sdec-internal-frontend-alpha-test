@@ -214,7 +214,7 @@ object CreateThreadPage extends BasePage {
   }
 
   def isIntroTextDisplayedBeforeButton: Boolean = {
-    val introLocation  = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getLocation
+    val introLocation = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getLocation
     val buttonLocation = getCreateThreadButton.getLocation
     introLocation.getY < buttonLocation.getY
   }
