@@ -17,8 +17,8 @@ docker run --rm -d -p 27017:27017 --name mongo percona/percona-server-mongodb:6.
 
 Start the following services:
  - AUTH
- - AUTH_LogIN_API
- - AUTH_LOGIN_sTUB
+ - AUTH_LOGIN_API
+ - AUTH_LOGIN_STUB
 
 ```bash
 sm2 --start SDEC_INTERNAL_FRONTEND_ALPHA_TEST
@@ -36,10 +36,14 @@ Make sure that the following JVM Options are added to the run configuration's VM
 ```
 Then, you can run these tests in IntelliJ.
 
+Run tests as follows:
+
+* Argument `<browser>` must be `chrome`, `edge`, or `firefox`.
+* Argument `<environment>` must be `local`, `dev`, `qa` or `staging`.
+
 ```bash
-sbt clean -Dbrowser="<browser>" -Denvironment="local" test testReport
+sbt clean -Dbrowser="<browser>" -Denvironment="<environment>" test testReport
 ```
-sbt clean -Dbrowser="chrome" -Denvironment="local" test testReport
 
 ## Scalafmt
 

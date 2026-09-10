@@ -35,4 +35,7 @@ trait BaseSpec
     Driver.instance.manage().deleteAllCookies()
   }
 
+  override def afterAll(): Unit =
+    quitBrowser()
+
 }

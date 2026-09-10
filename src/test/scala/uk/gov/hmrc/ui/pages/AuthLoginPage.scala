@@ -22,11 +22,11 @@ import uk.gov.hmrc.ui.driver.BrowserDriver
 
 object AuthLoginPage extends BrowserDriver with BasePage {
 
-  val url: String         = s"${TestConfiguration.url("auth-login-stub")}/gg-sign-in"
+  val url:         String = s"${TestConfiguration.url("auth-login-stub")}/gg-sign-in"
   val frontEndUrl: String = TestConfiguration.url("sdec-internal-frontend")
 
   object Fields {
-    val credId: By      = By.id("authorityId")
+    val credId:      By = By.id("authorityId")
     val redirectUrl: By = By.id("redirectionUrl")
   }
 

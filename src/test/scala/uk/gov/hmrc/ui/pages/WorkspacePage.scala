@@ -15,33 +15,32 @@
  */
 
 package uk.gov.hmrc.ui.pages
-
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.{By, WebElement}
 
 object WorkspacePage extends BasePage {
 
-  val heading: By                      = By.xpath("/html/body/header/div/div[2]/a")
-  val workspaceTab: By                 = By.xpath("//*[@id=\"navigation\"]/li[2]/a")
-  val firstThreadReferenceLocator: By  = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/th/a")
+  val heading:                      By = By.xpath("/html/body/header/div/div[2]/a")
+  val workspaceTab:                 By = By.xpath("//*[@id=\"navigation\"]/li[2]/a")
+  val firstThreadReferenceLocator:  By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/th/a")
   val firstRelatedReferenceLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[1]")
-  val firstExternalContactLocator: By  = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[2]/a")
-  val firstStatusLocator: By           = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[3]")
-  val firstWaitingOnLocator: By        = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[4]")
-  val threadReferenceLocator: By       = By.xpath("//*[@id=\"main-content\"]/div/dl/div[1]/dd")
-  val relatedReferenceLocator: By      = By.xpath("//*[@id=\"main-content\"]/div/dl/div[2]/dd")
-  val externalContactLocator: By       = By.xpath("//*[@id=\"main-content\"]/div/dl/div[3]/dd")
-  val statusLocator: By                = By.xpath("//*[@id=\"main-content\"]/div/dl/div[4]/dd")
-  val waitingOnLocator: By             = By.xpath("//*[@id=\"main-content\"]/div/dl/div[5]/dd")
+  val firstExternalContactLocator:  By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[2]/a")
+  val firstStatusLocator:           By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[3]")
+  val firstWaitingOnLocator:        By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[4]")
+  val threadReferenceLocator:       By = By.xpath("//*[@id=\"main-content\"]/div/dl/div[1]/dd")
+  val relatedReferenceLocator:      By = By.xpath("//*[@id=\"main-content\"]/div/dl/div[2]/dd")
+  val externalContactLocator:       By = By.xpath("//*[@id=\"main-content\"]/div/dl/div[3]/dd")
+  val statusLocator:                By = By.xpath("//*[@id=\"main-content\"]/div/dl/div[4]/dd")
+  val waitingOnLocator:             By = By.xpath("//*[@id=\"main-content\"]/div/dl/div[5]/dd")
 
-  val threadInformationText: By         = By.xpath("//*[@id=\"main-content\"]/div/h2")
-  val threadReferenceText: By           = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[1]")
-  val relatedReferenceText: By          = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[2]")
-  val externalContactText: By           = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[3]")
-  val statusText: By                    = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[4]")
-  val waitingOnText: By                 = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[5]")
-  val deadlineText: By                  = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[6]")
-  val statusValueText: By               = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[6]")
+  val threadInformationText:         By = By.xpath("//*[@id=\"main-content\"]/div/h2")
+  val threadReferenceText:           By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[1]")
+  val relatedReferenceText:          By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[2]")
+  val externalContactText:           By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[3]")
+  val statusText:                    By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[4]")
+  val waitingOnText:                 By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[5]")
+  val deadlineText:                  By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[6]")
+  val statusValueText:               By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[6]")
   val statusValueNeedsAttentionText: By =
     By.cssSelector("#main-content > div > div.table-scroll-wrapper > table > tbody > tr:nth-child(4) > td:nth-child(4)")
 

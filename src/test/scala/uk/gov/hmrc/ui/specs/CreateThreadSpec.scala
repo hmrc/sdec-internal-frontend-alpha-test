@@ -130,7 +130,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.selectContinueButton()
 
       And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
@@ -177,7 +177,7 @@ class CreateThreadSpec extends BaseSpec {
       And(
         "the Test User adds a message to the external user exceeded the character limit available and user tries to submit"
       )
-      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum " +
           "sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies " +
@@ -250,7 +250,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.selectContinueButton()
 
       And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
@@ -268,7 +268,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterDate("11", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       And("the Test User navigates to Check Your Answers page")
-      CheckYourAnswersPage.getCheckYourAnswersTitleText    should include("Check your answers")
+      CheckYourAnswersPage.getCheckYourAnswersTitleText should include("Check your answers")
 
     }
 
@@ -298,7 +298,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.selectContinueButton()
 
       And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
@@ -316,15 +316,15 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterDate("", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage()     should include("Enter the day part of the date")
+      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the day part of the date")
       CreateThreadPage.enterDate("11", "", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage()     should include("Enter the month part of the date")
+      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the month part of the date")
       CreateThreadPage.enterDate("11", "11", "")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage()     should include("Enter the year part of the date")
+      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the year part of the date")
 
     }
 
@@ -351,7 +351,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.selectContinueButton()
 
       And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
@@ -369,11 +369,11 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterDate("33", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage()     should include("Enter a valid response date")
+      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter a valid response date")
       CreateThreadPage.enterDate("11", "14", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage()     should include("Enter a valid response date")
+      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter a valid response date")
 
     }
 
@@ -403,7 +403,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.selectContinueButton()
 
       And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
@@ -421,7 +421,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterDate("11", "11", "2025")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage()     should include("The response date must be in the future")
+      CreateThreadPage.checkResponseDateErrorMessage() should include("The response date must be in the future")
     }
 
     Scenario(
@@ -450,7 +450,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.selectContinueButton()
 
       And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText      shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
@@ -468,7 +468,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterDate("11", "11", "26")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage()     should include("Enter the year using 4 digits")
+      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the year using 4 digits")
     }
 
   }
