@@ -247,7 +247,7 @@ class CheckYourAnswersSpec extends BaseSpec {
       CreateThreadPage.selectContinueButton()
 
       Then("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText   shouldBe "Thread details"
+      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
       CreateThreadPage.enterMessageDetails(
         "Lorem ipsum dolor sit amet, " +
           "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
@@ -256,7 +256,8 @@ class CheckYourAnswersSpec extends BaseSpec {
       CreateThreadPage.enterDate("11", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.selectConfirmAndSendButton()
-      CheckYourAnswersPage.getThreadReferenceNumberText should include("Thread reference number")
+
+      CheckYourAnswersPage.getThreadReferenceNumberText should startWith("Thread reference number")
     }
 
     Scenario(
@@ -294,9 +295,9 @@ class CheckYourAnswersSpec extends BaseSpec {
       CreateThreadPage.enterDate("11", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
       CheckYourAnswersPage.selectConfirmAndSendButton()
-      CheckYourAnswersPage.getThreadReferenceNumberText should include("Thread reference number")
+      CheckYourAnswersPage.getThreadReferenceNumberText should startWith("Thread reference number")
       CheckYourAnswersPage.getResponseRequiredDateText  should include("11 November 2026")
-      CheckYourAnswersPage.getStatusText                should include("Response Requested")
+      CheckYourAnswersPage.getStatusText                should include("Response requested")
     }
 
   }

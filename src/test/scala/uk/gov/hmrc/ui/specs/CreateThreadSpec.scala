@@ -16,18 +16,14 @@
 
 package uk.gov.hmrc.ui.specs
 
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
-import uk.gov.hmrc.ui.pages.CreateThreadPage.getClickNoExistingCaseInput
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, CheckYourAnswersPage, CreateThreadPage, WorkspacePage}
-import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, CreateThreadTests, SoloTests}
-
-import java.time.Duration
+import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
 
 class CreateThreadSpec extends BaseSpec {
   Feature("Internal User Journey - Create Thread page") {
 
-    Scenario("Create Thread Button is visible and must be selectable", CreateThreadTests) {
+    Scenario("Create Thread Button is visible and must be selectable", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.login()
@@ -50,7 +46,7 @@ class CreateThreadSpec extends BaseSpec {
 
     Scenario(
       "The Test User enters the contact details incorrectly and validation message captured",
-      CreateThreadTests
+      AcceptanceTests
     ) {
 
       Given("Test User Logins with Credential ID")
@@ -79,7 +75,7 @@ class CreateThreadSpec extends BaseSpec {
 
     Scenario(
       "The Test User enters the contact details with invalid format for National Insurance Number",
-      CreateThreadTests
+      AcceptanceTests
     ) {
 
       Given("Test User Logins with Credential ID")
@@ -110,7 +106,7 @@ class CreateThreadSpec extends BaseSpec {
 
     Scenario(
       "The Test User enters the contact details and adds message details with character limit and yes related case",
-      CreateThreadTests
+      AcceptanceTests
     ) {
 
       Given("Test User Logins with Credential ID")
@@ -155,7 +151,7 @@ class CreateThreadSpec extends BaseSpec {
 
     Scenario(
       "The Test User enters the contact details and adds message details with character limit exceeded and no related case",
-      CreateThreadTests
+      AcceptanceTests
     ) {
 
       Given("Test User Logins with Credential ID")
@@ -204,7 +200,7 @@ class CreateThreadSpec extends BaseSpec {
       errorMessage should include("Message must be 1,000 characters or less. You have 65 characters too many")
     }
 
-    Scenario("The Test User enters the contact details and clicks yes for related case", CreateThreadTests) {
+    Scenario("The Test User enters the contact details and clicks yes for related case", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.login()
@@ -231,7 +227,7 @@ class CreateThreadSpec extends BaseSpec {
 
     }
 
-    Scenario("Test user creates a new thread and provides valid response date for deadline", CreateThreadTests) {
+    Scenario("Test user creates a new thread and provides valid response date for deadline", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.login()
@@ -278,7 +274,7 @@ class CreateThreadSpec extends BaseSpec {
 
     Scenario(
       "Test user creates a new thread and leaves one or more of day, month or year boxes empty",
-      CreateThreadTests
+      AcceptanceTests
     ) {
 
       Given("Test User Logins with Credential ID")
@@ -332,7 +328,7 @@ class CreateThreadSpec extends BaseSpec {
 
     }
 
-    Scenario("Test user creates a new thread and provides unreal value for day, month and year", CreateThreadTests) {
+    Scenario("Test user creates a new thread and provides unreal value for day, month and year", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.login()
@@ -383,7 +379,7 @@ class CreateThreadSpec extends BaseSpec {
 
     Scenario(
       "Test user creates a new thread and provides response date in past, receives error message that response date must be a future date",
-      CreateThreadTests
+      AcceptanceTests
     ) {
 
       Given("Test User Logins with Credential ID")
@@ -430,7 +426,7 @@ class CreateThreadSpec extends BaseSpec {
 
     Scenario(
       "Test user creates a new thread and provides less than 4 characters in year field for response date, receives error message - Enter the year using 4 digits ",
-      CreateThreadTests
+      AcceptanceTests
     ) {
 
       Given("Test User Logins with Credential ID")

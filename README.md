@@ -25,6 +25,16 @@ sm2 --start SDEC_INTERNAL_FRONTEND_ALPHA_TEST
 ```
 
 ## Tests
+To run all tests:
+```
+sbt clean run
+```
+
+Make sure that the following JVM Options are added to the run configuration's VM Option sections:
+```
+-Dbrowser=chrome -Denvironment=local -Dbrowser.option.headless=false -Dbrowser.usePreviousVersion=true
+```
+Then, you can run these tests in IntelliJ.
 
 ```bash
 sbt clean -Dbrowser="<browser>" -Denvironment="local" test testReport

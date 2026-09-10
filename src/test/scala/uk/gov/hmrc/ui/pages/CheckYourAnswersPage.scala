@@ -16,13 +16,9 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
+import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.{By, JavascriptExecutor, WebElement}
-import uk.gov.hmrc.domain.{Generator, Nino}
-import org.openqa.selenium.WebElement
 import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
-
-import java.time.Duration
 
 object CheckYourAnswersPage extends BasePage {
 
@@ -41,23 +37,21 @@ object CheckYourAnswersPage extends BasePage {
   val relatedCaseValue: By             = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[5]/dd[1]")
   val relatedReferenceNumberValue: By  = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[6]/dd[1]")
   val messageValue: By                 = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[1]/text()")
-  val threadReferenceNumberLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div[1]/span")
-  val responseRequiredDateLocator: By  = By.xpath("//*[@id=\"main-content\"]/div/div[1]/ol/li/div/div/p/strong")
-  val statusLocator: By                = By.xpath("//*[@id=\"main-content\"]/div/div[2]/p[1]")
-
-  private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
+  val threadReferenceNumberLocator: By = By.cssSelector(".govuk-caption-l")
+  val responseRequiredDateLocator: By  = By.cssSelector("p.govuk-body strong")
+  val statusLocator: By                = By.cssSelector("h2.hmrc-timeline__event-title")
 
   def getThreadReferenceNumberText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceNumberLocator)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceNumberLocator)).getText.trim
 
   def getResponseRequiredDateText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(responseRequiredDateLocator)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(responseRequiredDateLocator)).getText.trim
 
   def getStatusText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(statusLocator)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(statusLocator)).getText.trim
 
   def getNameUpdateText: String = {
-    val nameElement = wait.until(
+    val nameElement = webDriverWait.until(
       ExpectedConditions.presenceOfElementLocated(verifyNameUpdate)
     )
 
@@ -73,7 +67,7 @@ object CheckYourAnswersPage extends BasePage {
     driver.findElements(relatedReferenceNumberValue)
 
   def getMessageText: String = {
-    val nameElement = wait.until(
+    val nameElement = webDriverWait.until(
       ExpectedConditions.presenceOfElementLocated(messageValue)
     )
 
@@ -86,7 +80,7 @@ object CheckYourAnswersPage extends BasePage {
   }
 
   def getEmailAddressText: String = {
-    val nameElement = wait.until(
+    val nameElement = webDriverWait.until(
       ExpectedConditions.presenceOfElementLocated(emailAddressValue)
     )
 
@@ -99,7 +93,7 @@ object CheckYourAnswersPage extends BasePage {
   }
 
   def getMobileNumberText: String = {
-    val nameElement = wait.until(
+    val nameElement = webDriverWait.until(
       ExpectedConditions.presenceOfElementLocated(mobileNumberValue)
     )
 
@@ -112,7 +106,7 @@ object CheckYourAnswersPage extends BasePage {
   }
 
   def getNINumberText: String = {
-    val nameElement = wait.until(
+    val nameElement = webDriverWait.until(
       ExpectedConditions.presenceOfElementLocated(niNumberValue)
     )
 
@@ -125,7 +119,7 @@ object CheckYourAnswersPage extends BasePage {
   }
 
   def getDateUpdateText: String = {
-    val dateElement = wait.until(
+    val dateElement = webDriverWait.until(
       ExpectedConditions.presenceOfElementLocated(verifyDateUpdate)
     )
 
@@ -138,7 +132,7 @@ object CheckYourAnswersPage extends BasePage {
   }
 
   def getCheckYourAnswersTitleText: String = {
-    val headingElement = wait.until(
+    val headingElement = webDriverWait.until(
       ExpectedConditions.presenceOfElementLocated(checkYourAnswersPage)
     )
 
@@ -151,40 +145,40 @@ object CheckYourAnswersPage extends BasePage {
   }
 
   def selectThreadDetailsLink(): Unit = {
-    val changeLink = wait.until(
+    val changeLink = webDriverWait.until(
       ExpectedConditions.elementToBeClickable(threadDetailsPage)
     )
 
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", changeLink)
 
-    wait.until(ExpectedConditions.elementToBeClickable(changeLink))
+    webDriverWait.until(ExpectedConditions.elementToBeClickable(changeLink))
 
     jsExecutor.executeScript("arguments[0].click();", changeLink)
   }
 
   def selectWhoAreYouContactingLink(): Unit = {
-    val changeLink = wait.until(
+    val changeLink = webDriverWait.until(
       ExpectedConditions.elementToBeClickable(whoAreYouContactingPage)
     )
 
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", changeLink)
 
-    wait.until(ExpectedConditions.elementToBeClickable(changeLink))
+    webDriverWait.until(ExpectedConditions.elementToBeClickable(changeLink))
 
     jsExecutor.executeScript("arguments[0].click();", changeLink)
   }
 
   def selectConfirmAndSendButton(): Unit = {
-    val confirmAndSendButton = wait.until(
+    val confirmAndSendButton = webDriverWait.until(
       ExpectedConditions.elementToBeClickable(clickConfirmAndSubmitButton)
     )
 
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", confirmAndSendButton)
 
-    wait.until(ExpectedConditions.elementToBeClickable(confirmAndSendButton))
+    webDriverWait.until(ExpectedConditions.elementToBeClickable(confirmAndSendButton))
 
     jsExecutor.executeScript("arguments[0].click();", confirmAndSendButton)
   }

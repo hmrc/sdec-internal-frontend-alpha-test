@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ui.specs
 
-import org.openqa.selenium.chrome.ChromeDriver
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, GivenWhenThen}
@@ -34,14 +33,6 @@ trait BaseSpec
   override def beforeAll(): Unit = {
     startBrowser()
     Driver.instance.manage().deleteAllCookies()
-    if (Driver.instance == null) {
-      Driver.instance = new ChromeDriver()
-    }
-
   }
 
-  override def afterAll(): Unit =
-    //  quitBrowser()
-    // driver.quit()
-    ()
 }

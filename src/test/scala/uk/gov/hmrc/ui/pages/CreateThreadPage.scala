@@ -16,14 +16,11 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
+import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.{By, JavascriptExecutor, WebElement}
-import uk.gov.hmrc.domain.{Generator, Nino}
 import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
 
-import java.time.Duration
 import scala.jdk.CollectionConverters.*
-import scala.math.random
 
 object CreateThreadPage extends BasePage {
 
@@ -58,79 +55,77 @@ object CreateThreadPage extends BasePage {
   val yearPartOfDate: By               = By.id("responseDate-responseDate.year")
   val errormessageResponseDate: By     = By.id("responseDate-error")
 
-  private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
-
   def getCreateThreadButton: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(createThreadButtonLocator))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(createThreadButtonLocator))
 
   def getIntroductoryText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getText.trim
 
   def getRemainingCharacterCountDisplayed: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(remainingCharactersLeft)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(remainingCharactersLeft)).getText.trim
 
   def getThreadDetailPageText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(threadDetailPageTitle)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(threadDetailPageTitle)).getText.trim
 
   def getViewNoExistingCaseText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(viewNoExistingCase)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(viewNoExistingCase)).getText.trim
 
   def getCreateThreadPageTitleText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(createThreadPageTitle)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(createThreadPageTitle)).getText.trim
 
   def getErrorFirstName: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(errorFirstName)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(errorFirstName)).getText.trim
 
   def getErrorLastName: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(errorLastName)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(errorLastName)).getText.trim
 
   def getErrorEmailAddress: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(errorEmailAddress)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(errorEmailAddress)).getText.trim
 
   def getErrorPhoneNumber: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(errorPhoneNumber)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(errorPhoneNumber)).getText.trim
 
   def getErrorNationalInsuranceNumber: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(errorNationalInsuranceNumber)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(errorNationalInsuranceNumber)).getText.trim
 
   def getMessageDetails: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(addMessageDetails))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(addMessageDetails))
 
   def getEnterFirstNameInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(enterFirstName))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(enterFirstName))
 
   def getEnterLastNameInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(enterLastName))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(enterLastName))
 
   def getEnterEmailInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(enterEmailAddress))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(enterEmailAddress))
 
   def getEnterPhoneNumberInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(enterPhoneNumber))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(enterPhoneNumber))
 
   def getEnterNationalInsuranceNumberInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(enterNationalInsuranceNumber))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(enterNationalInsuranceNumber))
 
   def getEnterRelatedRefNoInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(enterRelatedRefNo))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(enterRelatedRefNo))
 
   def getClickYesExistingCaseInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(clickYesExistingCase))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(clickYesExistingCase))
 
   def getSubmitButtonInput: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(clickSubmitButton))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(clickSubmitButton))
 
   def dayPartOfDateElement: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(dayPartOfDate))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(dayPartOfDate))
 
   def monthPartOfDateElement: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(monthPartOfDate))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(monthPartOfDate))
 
   def errorMessageResponseDateElement: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(errormessageResponseDate))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(errormessageResponseDate))
 
   def yearPartOfDateElement: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(yearPartOfDate))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(yearPartOfDate))
 
   def enterDate(day: String, month: String, year: String): Unit = {
     dayPartOfDateElement.clear()
@@ -206,26 +201,26 @@ object CreateThreadPage extends BasePage {
     getClickYesExistingCaseInput.click()
 
   def selectContinueButton(): Unit = {
-    val continueButton = wait.until(
+    val continueButton = webDriverWait.until(
       ExpectedConditions.elementToBeClickable(clickContinueButton)
     )
 
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", continueButton)
 
-    wait.until(ExpectedConditions.elementToBeClickable(continueButton))
+    webDriverWait.until(ExpectedConditions.elementToBeClickable(continueButton))
 
     jsExecutor.executeScript("arguments[0].click();", continueButton)
   }
 
   def isIntroTextDisplayedBeforeButton: Boolean = {
-    val introLocation  = wait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getLocation
+    val introLocation  = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getLocation
     val buttonLocation = getCreateThreadButton.getLocation
     introLocation.getY < buttonLocation.getY
   }
 
   def errorMessageText(): String = {
-    val errorMessage = wait.until(
+    val errorMessage = webDriverWait.until(
       ExpectedConditions.presenceOfElementLocated(overTheLimitCharMessage)
     )
 
@@ -238,7 +233,7 @@ object CreateThreadPage extends BasePage {
   }
 
   def clickErrorMessageLink(): Unit = {
-    val errorMessageLink = wait.until(
+    val errorMessageLink = webDriverWait.until(
       ExpectedConditions.visibilityOfElementLocated(overTheLimitCharLink)
     )
 
@@ -255,7 +250,7 @@ object CreateThreadPage extends BasePage {
   }
 
   def getClickNoExistingCaseInput: Boolean = {
-    val radioElement = wait.until(
+    val radioElement = webDriverWait.until(
       ExpectedConditions.visibilityOfElementLocated(clickNoExistingCase)
     )
 
@@ -269,7 +264,7 @@ object CreateThreadPage extends BasePage {
   }
 
   def selectHasRelatedCaseNo(): Unit = {
-    val radioElement = wait.until(
+    val radioElement = webDriverWait.until(
       ExpectedConditions.presenceOfElementLocated(clickNoExistingCase)
     )
 
@@ -286,7 +281,7 @@ object CreateThreadPage extends BasePage {
   }
 
   def getClickHasRelatedCaseInput: Boolean = {
-    val radioElement = wait.until(
+    val radioElement = webDriverWait.until(
       ExpectedConditions.visibilityOfElementLocated(clickYesExistingCase)
     )
 
@@ -300,7 +295,7 @@ object CreateThreadPage extends BasePage {
   }
 
   def selectHasRelatedCaseYes(): Unit = {
-    val radioElement = wait.until(
+    val radioElement = webDriverWait.until(
       ExpectedConditions.presenceOfElementLocated(clickYesExistingCase)
     )
 
