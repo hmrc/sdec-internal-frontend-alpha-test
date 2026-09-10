@@ -16,11 +16,8 @@
 
 package uk.gov.hmrc.ui.pages
 
+import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.{By, WebElement}
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
-import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
-import scala.jdk.CollectionConverters.*
-import java.time.Duration
 
 object WorkspacePage extends BasePage {
 
@@ -48,75 +45,73 @@ object WorkspacePage extends BasePage {
   val statusValueNeedsAttentionText: By =
     By.cssSelector("#main-content > div > div.table-scroll-wrapper > table > tbody > tr:nth-child(4) > td:nth-child(4)")
 
-  private val wait = new WebDriverWait(driver, Duration.ofSeconds(10))
-
   def getStatusValueText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(statusValueText)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(statusValueText)).getText.trim
 
   def getThreadReferenceValue: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceLocator)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceLocator)).getText.trim
 
   def getRelatedReferenceValue: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(relatedReferenceLocator)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(relatedReferenceLocator)).getText.trim
 
   def getExternalContactValue: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(externalContactLocator)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(externalContactLocator)).getText.trim
 
   def getStatusValue: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(statusLocator)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(statusLocator)).getText.trim
 
   def getWaitingOnValue: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(waitingOnLocator)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(waitingOnLocator)).getText.trim
 
   def getStatusValueNeedsAttentionText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(statusValueNeedsAttentionText)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(statusValueNeedsAttentionText)).getText.trim
 
   def getThreadInformationText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(threadInformationText)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(threadInformationText)).getText.trim
 
   def getThreadReferenceText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceText)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceText)).getText.trim
 
   def getRelatedReferenceText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(relatedReferenceText)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(relatedReferenceText)).getText.trim
 
   def getExternalContactText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(externalContactText)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(externalContactText)).getText.trim
 
   def getStatusText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(statusText)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(statusText)).getText.trim
 
   def getWaitingOnText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(waitingOnText)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(waitingOnText)).getText.trim
 
   def getDeadlineText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(deadlineText)).getText.trim
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(deadlineText)).getText.trim
 
-  def getHeading: WebElement = wait.until(ExpectedConditions.visibilityOfElementLocated(heading))
+  def getHeading: WebElement = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(heading))
 
-  def getWorkspaceTab: WebElement = wait.until(ExpectedConditions.visibilityOfElementLocated(workspaceTab))
+  def getWorkspaceTab: WebElement = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(workspaceTab))
 
   def firstThreadReferenceElement: WebElement =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(firstThreadReferenceLocator))
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstThreadReferenceLocator))
 
   def selectFirstThreadReference(): Unit =
     firstThreadReferenceElement.click()
 
   def getThreadDetails: List[String] = {
     val firstThreadReferenceText: String =
-      wait.until(ExpectedConditions.visibilityOfElementLocated(firstThreadReferenceLocator)).getText.trim
+      webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstThreadReferenceLocator)).getText.trim
 
     val firstRelatedReferenceText: String =
-      wait.until(ExpectedConditions.visibilityOfElementLocated(firstRelatedReferenceLocator)).getText.trim
+      webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstRelatedReferenceLocator)).getText.trim
 
     val firstExternalContactText: String =
-      wait.until(ExpectedConditions.visibilityOfElementLocated(firstExternalContactLocator)).getText.trim
+      webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstExternalContactLocator)).getText.trim
 
     val firstStatusText: String =
-      wait.until(ExpectedConditions.visibilityOfElementLocated(firstStatusLocator)).getText.trim
+      webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstStatusLocator)).getText.trim
 
     val firstWaitingOnText: String =
-      wait.until(ExpectedConditions.visibilityOfElementLocated(firstWaitingOnLocator)).getText.trim
+      webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstWaitingOnLocator)).getText.trim
 
     val threadDetails: List[String] = List(
       firstThreadReferenceText,

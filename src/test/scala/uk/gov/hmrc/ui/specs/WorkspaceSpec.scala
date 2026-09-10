@@ -16,12 +16,9 @@
 
 package uk.gov.hmrc.ui.specs
 
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, WorkspacePage}
-import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
-
-import java.time.Duration
+import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
 
 class WorkspaceSpec extends BaseSpec {
   Feature("Internal User Journey - Workspace ") {
