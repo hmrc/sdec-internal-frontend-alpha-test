@@ -26,8 +26,15 @@ class CreateThreadSpec extends BaseSpec {
     Scenario("Create Thread Button is visible and must be selectable", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("""the Test User views a "Create thread" button """)
       CreateThreadPage.isCreateThreadButtonDisplayed shouldBe true
@@ -50,8 +57,15 @@ class CreateThreadSpec extends BaseSpec {
     ) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -79,8 +93,15 @@ class CreateThreadSpec extends BaseSpec {
     ) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -110,8 +131,15 @@ class CreateThreadSpec extends BaseSpec {
     ) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -122,7 +150,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterLastNameValue("Graf")
       CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
       CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
+      CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
 
       Then("the Test User enters the no continue button")
       CreateThreadPage.selectHasRelatedCaseYes()
@@ -155,8 +183,15 @@ class CreateThreadSpec extends BaseSpec {
     ) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -167,7 +202,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterLastNameValue("Graf")
       CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
       CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
+      CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
 
       And("the Test User enters the no continue button")
       CreateThreadPage.selectHasRelatedCaseNo()
@@ -203,8 +238,15 @@ class CreateThreadSpec extends BaseSpec {
     Scenario("The Test User enters the contact details and clicks yes for related case", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -215,7 +257,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterLastNameValue("Graf")
       CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
       CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
+      CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
 
       Then("the Test User enters the no continue button")
       CreateThreadPage.getViewNoExistingCaseText should include(
@@ -230,8 +272,15 @@ class CreateThreadSpec extends BaseSpec {
     Scenario("Test user creates a new thread and provides valid response date for deadline", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -242,7 +291,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterLastNameValue("Graf")
       CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
       CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
+      CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
 
       Then("the Test User enters the no continue button")
       CreateThreadPage.selectHasRelatedCaseYes()
@@ -278,8 +327,15 @@ class CreateThreadSpec extends BaseSpec {
     ) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -290,7 +346,7 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.enterLastNameValue("Graf")
       CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
       CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
+      CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 90 A")
 
       Then("the Test User enters the no continue button")
       CreateThreadPage.selectHasRelatedCaseYes()
@@ -331,8 +387,15 @@ class CreateThreadSpec extends BaseSpec {
     Scenario("Test user creates a new thread and provides unreal value for day, month and year", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -383,8 +446,15 @@ class CreateThreadSpec extends BaseSpec {
     ) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -430,8 +500,15 @@ class CreateThreadSpec extends BaseSpec {
     ) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()

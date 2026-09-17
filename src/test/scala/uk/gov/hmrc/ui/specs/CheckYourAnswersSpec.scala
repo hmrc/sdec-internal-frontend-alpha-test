@@ -29,8 +29,15 @@ class CheckYourAnswersSpec extends BaseSpec {
     ) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -71,8 +78,15 @@ class CheckYourAnswersSpec extends BaseSpec {
     Scenario("The Test User successfully submits the Check your Answers page ", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -105,8 +119,15 @@ class CheckYourAnswersSpec extends BaseSpec {
     Scenario("The Test User validates contact details and date in Check your answers page", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -143,8 +164,15 @@ class CheckYourAnswersSpec extends BaseSpec {
     Scenario("The Test User successfully amends the name in who are you contacting page", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -184,8 +212,15 @@ class CheckYourAnswersSpec extends BaseSpec {
     Scenario("The Test User successfully amends the date in check your Answers page", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -227,8 +262,15 @@ class CheckYourAnswersSpec extends BaseSpec {
     ) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
@@ -266,8 +308,15 @@ class CheckYourAnswersSpec extends BaseSpec {
     ) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterSurNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the Test User clicks on the create thread button it should navigate to the create new thread page")
       CreateThreadPage.selectCreateThreadButton()
