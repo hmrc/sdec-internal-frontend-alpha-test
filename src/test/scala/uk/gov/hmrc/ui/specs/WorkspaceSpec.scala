@@ -113,11 +113,11 @@ class WorkspaceSpec extends BaseSpec {
       WorkspacePage.selectFirstThreadReference()
 
       And("the Test User verifies thread details")
-      WorkspacePage.getSpecificThreadReferenceText  should include(threadDetails.head)
-      WorkspacePage.getSpecificRelatedReferenceText should include(threadDetails(1))
-      WorkspacePage.getSpecificExternalContactText  should include(threadDetails(2))
-      WorkspacePage.getSpecificStatusText           should include(threadDetails(3))
-      WorkspacePage.getSpecificWaitingOnText        should include(threadDetails(4))
+      WorkspacePage.getSpecificThreadReferenceText  shouldBe threadDetails.head
+      WorkspacePage.getSpecificRelatedReferenceText shouldBe threadDetails(1)
+      WorkspacePage.getSpecificExternalContactText  shouldBe threadDetails(2)
+      WorkspacePage.getSpecificStatusText           shouldBe threadDetails(3)
+      WorkspacePage.getSpecificWaitingOnText        shouldBe threadDetails(4)
     }
 
   }
