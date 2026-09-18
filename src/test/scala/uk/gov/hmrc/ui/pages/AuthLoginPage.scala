@@ -27,7 +27,7 @@ object AuthLoginPage extends BrowserDriver with BasePage {
   val url:                 String = TestConfiguration.url("sdec-internal-frontend")
   val pidName:             By     = By.id("pid")
   val givenName:           By     = By.id("usersGivenName")
-  val surName:             By     = By.id("usersSurname")
+  val lastName:            By     = By.id("usersSurname")
   val emailAddress:        By     = By.id("emailAddress")
   val clickStatusSuccess:  By     = By.xpath("//input[@id='success'][@name='status']")
   val clickSignatureValid: By     = By.xpath("//input[@id='valid'][@name='signature']")
@@ -40,8 +40,8 @@ object AuthLoginPage extends BrowserDriver with BasePage {
   def getEnterGivenNameInput: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(givenName))
 
-  def getEnterSurNameInput: WebElement =
-    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(surName))
+  def getEnterLastNameInput: WebElement =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(lastName))
 
   def getEnterEmailAddressInput: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(emailAddress))
@@ -68,8 +68,8 @@ object AuthLoginPage extends BrowserDriver with BasePage {
     input.sendKeys(value)
   }
 
-  def enterSurNameValue(value: String): Unit = {
-    val input = getEnterSurNameInput
+  def enterLastNameValue(value: String): Unit = {
+    val input = getEnterLastNameInput
     input.clear()
     input.sendKeys(value)
   }

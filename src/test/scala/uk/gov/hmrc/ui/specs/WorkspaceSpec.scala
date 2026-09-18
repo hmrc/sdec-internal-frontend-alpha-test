@@ -18,7 +18,7 @@ package uk.gov.hmrc.ui.specs
 
 import org.scalatest.featurespec.AnyFeatureSpec
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, CreateThreadPage, WorkspacePage}
-import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
+import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 
 class WorkspaceSpec extends BaseSpec {
   Feature("Internal User Journey - Workspace ") {
@@ -29,8 +29,8 @@ class WorkspaceSpec extends BaseSpec {
       AuthLoginPage.navigateToAuthPage()
       AuthLoginPage.enterPIDValue("123456")
       AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterSurNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.enterLastNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
       AuthLoginPage.selectStatusSuccess()
       AuthLoginPage.selectSignatureValid()
       AuthLoginPage.enterRolesText("sdec_integration_tester")
@@ -48,8 +48,8 @@ class WorkspaceSpec extends BaseSpec {
       AuthLoginPage.navigateToAuthPage()
       AuthLoginPage.enterPIDValue("123456")
       AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterSurNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.enterLastNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
       AuthLoginPage.selectStatusSuccess()
       AuthLoginPage.selectSignatureValid()
       AuthLoginPage.enterRolesText("sdec_integration_tester")
@@ -58,15 +58,15 @@ class WorkspaceSpec extends BaseSpec {
       When("the dashboard page loads for the Test User")
 
       Then("""the thread information details are displayed in a table with title "shared work queue"""")
-      WorkspacePage.getThreadInformationText should include("Shared work queue")
+      WorkspacePage.getWorkspaceHeadingText should include("Shared work queue")
 
       And("the table has Thread Reference, Related Reference, External Contact, Status, Waiting on and Deadline")
-      WorkspacePage.getThreadReferenceText  shouldBe "Thread reference"
-      WorkspacePage.getRelatedReferenceText shouldBe "Related reference"
-      WorkspacePage.getExternalContactText  shouldBe "External contact"
-      WorkspacePage.getStatusText           shouldBe "Status"
-      WorkspacePage.getWaitingOnText        shouldBe "Waiting on"
-      WorkspacePage.getDeadlineText         shouldBe "Deadline"
+      WorkspacePage.getThreadReferenceHeader  shouldBe "Thread reference"
+      WorkspacePage.getRelatedReferenceHeader shouldBe "Related reference"
+      WorkspacePage.getExternalContactHeader  shouldBe "External contact"
+      WorkspacePage.getStatusHeader           shouldBe "Status"
+      WorkspacePage.getWaitingOnHeader        shouldBe "Waiting on"
+      WorkspacePage.getDeadlineHeader         shouldBe "Deadline"
 
     }
 
@@ -76,8 +76,8 @@ class WorkspaceSpec extends BaseSpec {
       AuthLoginPage.navigateToAuthPage()
       AuthLoginPage.enterPIDValue("123456")
       AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterSurNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.enterLastNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
       AuthLoginPage.selectStatusSuccess()
       AuthLoginPage.selectSignatureValid()
       AuthLoginPage.enterRolesText("sdec_qa_tester")
@@ -99,8 +99,8 @@ class WorkspaceSpec extends BaseSpec {
       AuthLoginPage.navigateToAuthPage()
       AuthLoginPage.enterPIDValue("123456")
       AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterSurNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@gmail.com")
+      AuthLoginPage.enterLastNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
       AuthLoginPage.selectStatusSuccess()
       AuthLoginPage.selectSignatureValid()
       AuthLoginPage.enterRolesText("sdec_qa_tester")
@@ -113,11 +113,11 @@ class WorkspaceSpec extends BaseSpec {
       WorkspacePage.selectFirstThreadReference()
 
       And("the Test User verifies thread details")
-      WorkspacePage.getThreadReferenceValue  should include(threadDetails.head)
-      WorkspacePage.getRelatedReferenceValue should include(threadDetails(1))
-      WorkspacePage.getExternalContactValue  should include(threadDetails(2))
-      WorkspacePage.getStatusValue           should include(threadDetails(3))
-      WorkspacePage.getWaitingOnValue        should include(threadDetails(4))
+      WorkspacePage.getSpecificThreadReferenceText  should include(threadDetails.head)
+      WorkspacePage.getSpecificRelatedReferenceText should include(threadDetails(1))
+      WorkspacePage.getSpecificExternalContactText  should include(threadDetails(2))
+      WorkspacePage.getSpecificStatusText           should include(threadDetails(3))
+      WorkspacePage.getSpecificWaitingOnText        should include(threadDetails(4))
     }
 
   }

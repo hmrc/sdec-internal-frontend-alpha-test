@@ -24,26 +24,47 @@ import java.time.Duration
 
 object WorkspacePage extends BasePage {
 
-  val workspacePageHeading:         By = By.cssSelector("/#main-content > div > h2")
-  val createThreadButtonLocator:    By = By.cssSelector("#workspace > div > div > button")
-  val firstThreadReferenceLocator:  By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/th/a")
-  val firstRelatedReferenceLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[1]")
-  val firstExternalContactLocator:  By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[2]/a")
-  val firstStatusLocator:           By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[3]")
-  val firstWaitingOnLocator:        By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/tbody/tr[1]/td[4]")
-  val threadReferenceLocator:       By = By.xpath("//*[@id=\"main-content\"]/div/dl/div[1]/dd")
-  val relatedReferenceLocator:      By = By.xpath("//*[@id=\"main-content\"]/div/dl/div[2]/dd")
-  val externalContactLocator:       By = By.xpath("//*[@id=\"main-content\"]/div/dl/div[3]/dd")
-  val statusLocator:                By = By.xpath("//*[@id=\"main-content\"]/div/dl/div[4]/dd")
-  val waitingOnLocator:             By = By.xpath("//*[@id=\"main-content\"]/div/dl/div[5]/dd")
-  val threadInformationText:        By = By.xpath("//*[@id=\"main-content\"]/div/h2")
-  val threadReferenceText:          By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[1]")
-  val relatedReferenceText:         By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[2]")
-  val externalContactText:          By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[3]")
-  val statusText:                   By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[4]")
-  val waitingOnText:                By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[5]")
-  val deadlineText:                 By = By.xpath("//*[@id=\"main-content\"]/div/div[2]/table/thead/tr/th[6]")
-  val statusValueText:              By = By.cssSelector(
+  val workspacePageHeading:        By = By.cssSelector("#main-content h2.govuk-heading-m")
+  val createThreadButtonLocator:   By = By.cssSelector("a.govuk-button[href*='create-thread']")
+  val firstThreadReferenceLocator: By =
+    By.cssSelector("table.govuk-table tbody tr:first-child th.govuk-table__header a.govuk-link")
+  val firstRelatedReferenceLocator: By =
+    By.cssSelector("table.govuk-table tbody tr:first-child td.govuk-table__cell:nth-child(2)")
+  val firstExternalContactLocator: By =
+    By.cssSelector("table.govuk-table tbody tr:first-child td.govuk-table__cell:nth-child(3) a.govuk-link")
+  val firstStatusLocator: By =
+    By.cssSelector("table.govuk-table tbody tr:first-child td.govuk-table__cell:nth-child(4)")
+  val firstWaitingOnLocator: By =
+    By.cssSelector("table.govuk-table tbody tr:first-child td.govuk-table__cell:nth-child(5)")
+  val firstDeadlineLocator: By =
+    By.cssSelector("table.govuk-table tbody tr:first-child td.govuk-table__cell:nth-child(6)")
+  val specificThreadReferenceValue: By =
+    By.cssSelector(
+      "dl.govuk-summary-list dd.govuk-summary-list__value:nth-of-type(1)"
+    )
+  val specificRelatedReferenceValue: By =
+    By.cssSelector(
+      "div.govuk-summary-list__row:nth-child(2) dd.govuk-summary-list__value"
+    )
+  val specificExternalContactValue: By =
+    By.cssSelector(
+      "div.govuk-summary-list__row:nth-child(3) dd.govuk-summary-list__value"
+    )
+  val specificStatusValue: By =
+    By.cssSelector(
+      "div.govuk-summary-list__row:nth-child(4) dd.govuk-summary-list__value"
+    )
+  val specificWaitingOnValue: By =
+    By.cssSelector(
+      "div.govuk-summary-list__row:nth-child(5) dd.govuk-summary-list__value"
+    )
+  val threadReferenceLocator:  By = By.cssSelector("table.govuk-table thead th.govuk-table__header:nth-child(1)")
+  val relatedReferenceLocator: By = By.cssSelector("table.govuk-table thead th.govuk-table__header:nth-child(2)")
+  val externalContactLocator:  By = By.cssSelector("table.govuk-table thead th.govuk-table__header:nth-child(3)")
+  val statusLocator:           By = By.cssSelector("table.govuk-table thead th.govuk-table__header:nth-child(4)")
+  val waitingOnLocator:        By = By.cssSelector("table.govuk-table thead th.govuk-table__header:nth-child(5)")
+  val deadlineLocator:         By = By.cssSelector("table.govuk-table thead th.govuk-table__header:nth-child(6)")
+  val statusValueText:         By = By.cssSelector(
     "#main-content > div > div.table-scroll-wrapper > table > tbody > tr:nth-child(1) > td.govuk-table__cell.sdec-priority-column > strong"
   )
   val statusValueWaitingText: By = By.cssSelector("table.govuk-table tbody tr td.govuk-table__cell:nth-child(4)")
@@ -63,44 +84,59 @@ object WorkspacePage extends BasePage {
   def getStatusValueText: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(statusValueText)).getText.trim
 
-  def getThreadReferenceValue: String =
+  def getThreadReferenceHeader: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceLocator)).getText.trim
 
-  def getRelatedReferenceValue: String =
+  def getRelatedReferenceHeader: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(relatedReferenceLocator)).getText.trim
 
-  def getExternalContactValue: String =
+  def getExternalContactHeader: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(externalContactLocator)).getText.trim
 
-  def getStatusValue: String =
+  def getStatusHeader: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(statusLocator)).getText.trim
 
-  def getWaitingOnValue: String =
+  def getWaitingOnHeader: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(waitingOnLocator)).getText.trim
+
+  def getDeadlineHeader: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(deadlineLocator)).getText.trim
 
   def getStatusValueWaitingText: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(statusValueWaitingText)).getText.trim
 
-  def getThreadInformationText: String =
-    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(threadInformationText)).getText.trim
+  def getFirstThreadReferenceText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstThreadReferenceLocator)).getText.trim
 
-  def getThreadReferenceText: String =
-    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceText)).getText.trim
+  def getFirstRelatedReferenceText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstRelatedReferenceLocator)).getText.trim
 
-  def getRelatedReferenceText: String =
-    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(relatedReferenceText)).getText.trim
+  def getFirstExternalContactText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstExternalContactLocator)).getText.trim
 
-  def getExternalContactText: String =
-    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(externalContactText)).getText.trim
+  def getFirstStatusText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstStatusLocator)).getText.trim
 
-  def getStatusText: String =
-    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(statusText)).getText.trim
+  def getFirstWaitingOnText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstWaitingOnLocator)).getText.trim
 
-  def getWaitingOnText: String =
-    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(waitingOnText)).getText.trim
+  def getFirstDeadlineText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstDeadlineLocator)).getText.trim
 
-  def getDeadlineText: String =
-    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(deadlineText)).getText.trim
+  def getSpecificThreadReferenceText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(specificThreadReferenceValue)).getText.trim
+
+  def getSpecificRelatedReferenceText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(specificRelatedReferenceValue)).getText.trim
+
+  def getSpecificExternalContactText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(specificExternalContactValue)).getText.trim
+
+  def getSpecificStatusText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(specificStatusValue)).getText.trim
+
+  def getSpecificWaitingOnText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(specificWaitingOnValue)).getText.trim
 
   def firstThreadReferenceElement: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(firstThreadReferenceLocator))
