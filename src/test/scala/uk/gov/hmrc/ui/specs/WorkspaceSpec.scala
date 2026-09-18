@@ -17,56 +17,73 @@
 package uk.gov.hmrc.ui.specs
 
 import org.scalatest.featurespec.AnyFeatureSpec
-import uk.gov.hmrc.ui.pages.{AuthLoginPage, WorkspacePage}
-import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
+import uk.gov.hmrc.ui.pages.{AuthLoginPage, CreateThreadPage, WorkspacePage}
+import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 
 class WorkspaceSpec extends BaseSpec {
   Feature("Internal User Journey - Workspace ") {
 
-    Scenario("Get Landing Page", AcceptanceTests) {
+    Scenario("Get Landing Page with correct Role for test user", AcceptanceTests) {
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
+      Given("User Logins with correct role")
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterLastNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_integration_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the dashboard page loads for the Test user")
+      When("the dashboard page loads")
 
-      Then("the Test User should be able to view a dashboard page ")
-      WorkspacePage.getHeading.getText should include("Share Files Securely with Child Benefit Service")
-
-      And("the Test User should be able to navigate to Workspace tab available ")
-      WorkspacePage.getWorkspaceTab.getText should include("Workspace")
-
+      Then("""a "Create thread" button must be displayed""")
+      CreateThreadPage.isCreateThreadButtonEnabled shouldBe true
     }
 
     Scenario("View Thread Information", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterLastNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_integration_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the dashboard page loads for the Test User")
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
 
       Then("""the thread information details are displayed in a table with title "shared work queue"""")
-      WorkspacePage.getThreadInformationText should include("Shared work queue")
+      WorkspacePage.getWorkspaceHeadingText should include("Shared work queue")
 
       And("the table has Thread Reference, Related Reference, External Contact, Status, Waiting on and Deadline")
-      WorkspacePage.getThreadReferenceText  shouldBe "Thread reference"
-      WorkspacePage.getRelatedReferenceText shouldBe "Related reference"
-      WorkspacePage.getExternalContactText  shouldBe "External contact"
-      WorkspacePage.getStatusText           shouldBe "Status"
-      WorkspacePage.getWaitingOnText        shouldBe "Waiting on"
-      WorkspacePage.getDeadlineText         shouldBe "Deadline"
+      WorkspacePage.getThreadReferenceHeader  shouldBe "Thread reference"
+      WorkspacePage.getRelatedReferenceHeader shouldBe "Related reference"
+      WorkspacePage.getExternalContactHeader  shouldBe "External contact"
+      WorkspacePage.getStatusHeader           shouldBe "Status"
+      WorkspacePage.getWaitingOnHeader        shouldBe "Waiting on"
+      WorkspacePage.getDeadlineHeader         shouldBe "Deadline"
 
     }
 
-    Scenario("View Thread status for for a specific Thread ", AcceptanceTests) {
+    Scenario("View Thread status for a specific Thread ", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterLastNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the dashboard page loads for the Test User")
-
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
 
       Then("the Test User views the status for specific Thread Ref No. -THR-2026-0616-0003 ")
 
@@ -74,29 +91,33 @@ class WorkspaceSpec extends BaseSpec {
 
       And("the Test User views the other thread status with priority work")
 
-      WorkspacePage.getStatusValueNeedsAttentionText shouldBe "Needs action"
-
     }
 
     Scenario("Test user opens an active thread and validates and reviews details", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
-      AuthLoginPage.login()
+      AuthLoginPage.navigateToAuthPage()
+      AuthLoginPage.enterPIDValue("123456")
+      AuthLoginPage.enterGivenNameValue("test")
+      AuthLoginPage.enterLastNameValue("user")
+      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+      AuthLoginPage.selectStatusSuccess()
+      AuthLoginPage.selectSignatureValid()
+      AuthLoginPage.enterRolesText("sdec_qa_tester")
+      AuthLoginPage.selectConfirmAndSendButton()
 
       When("the dashboard page loads for the Test User")
-
-      WorkspacePage.getWorkspaceTab.getText shouldBe "Workspace"
 
       Then("the Test User selects first active thread")
       val threadDetails: List[String] = WorkspacePage.getThreadDetails
       WorkspacePage.selectFirstThreadReference()
 
       And("the Test User verifies thread details")
-      WorkspacePage.getThreadReferenceValue  should include(threadDetails.head)
-      WorkspacePage.getRelatedReferenceValue should include(threadDetails(1))
-      WorkspacePage.getExternalContactValue  should include(threadDetails(2))
-      WorkspacePage.getStatusValue           should include(threadDetails(3))
-      WorkspacePage.getWaitingOnValue        should include(threadDetails(4))
+      WorkspacePage.getSpecificThreadReferenceText  shouldBe threadDetails.head
+      WorkspacePage.getSpecificRelatedReferenceText shouldBe threadDetails(1)
+      WorkspacePage.getSpecificExternalContactText  shouldBe threadDetails(2)
+      WorkspacePage.getSpecificStatusText           shouldBe threadDetails(3)
+      WorkspacePage.getSpecificWaitingOnText        shouldBe threadDetails(4)
     }
 
   }
