@@ -18,7 +18,7 @@ package uk.gov.hmrc.ui.specs
 
 import org.scalatest.featurespec.AnyFeatureSpec
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, CheckYourAnswersPage, CreateThreadPage, WorkspacePage}
-import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
+import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 
 class CreateThreadSpec extends BaseSpec {
   Feature("Internal User Journey - Create Thread page") {
@@ -371,14 +371,17 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
       CreateThreadPage.enterDate("", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
+
       And("the Test User sees the response date error message")
       CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the day part of the date")
       CreateThreadPage.enterDate("11", "", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
+
       And("the Test User sees the response date error message")
       CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the month part of the date")
       CreateThreadPage.enterDate("11", "11", "")
       CreateThreadPage.selectSubmitMessageDetailsButton()
+
       And("the Test User sees the response date error message")
       CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the year part of the date")
 
