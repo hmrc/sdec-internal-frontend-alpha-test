@@ -24,9 +24,9 @@ import scala.jdk.CollectionConverters.*
 
 object CreateThreadPage extends BasePage {
 
-  val createThreadButtonLocator:    By = By.xpath("//*[@id=\"main-content\"]/div/div[1]/a")
-  val introTextLocator:             By = By.xpath("//*[contains(normalize-space(), 'Share Files Securely')]")
-  val createThreadPageTitle:        By = By.xpath("//*[@id=\"main-content\"]/div/div/form/h1")
+  val createThreadButtonLocator:    By = By.cssSelector("a[data-module='govuk-button'][role='button']")
+  val introTextLocator:             By = By.cssSelector("h2.govuk-heading-m")
+  val createThreadPageTitle:        By = By.cssSelector("h1.govuk-heading-l")
   val enterFirstName:               By = By.id("firstName")
   val enterLastName:                By = By.id("lastName")
   val enterEmailAddress:            By = By.id("email")
@@ -47,8 +47,8 @@ object CreateThreadPage extends BasePage {
   val threadDetailPageTitle:        By = By.xpath("//*[@id=\"main-content\"]/div/div/form/h1")
   val addMessageDetails:            By = By.id("message")
   val clickSubmitButton:            By = By.cssSelector("#main-content > div > div > form > button")
-  val remainingCharactersLeft:      By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[2]/div[3]")
-  val overTheLimitCharLink:         By = By.xpath("//a[@href='#message' and contains(text(), 'Message must be')]")
+  val remainingCharactersLeft:      By = By.cssSelector(".govuk-character-count__message.govuk-character-count__status")
+  val overTheLimitCharLink:         By = By.cssSelector("div.govuk-error-message.govuk-character-count__status")
   val overTheLimitCharMessage:      By = By.cssSelector("p#message-error.govuk-error-message")
   val dayPartOfDate:                By = By.id("responseDate-responseDate.day")
   val monthPartOfDate:              By = By.id("responseDate-responseDate.month")
