@@ -46,9 +46,16 @@ object AuthLoginPage extends BrowserDriver with BasePage {
   def getEnterEmailAddressInput: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(emailAddress))
 
+  def clearBrowserCache(): Unit = {
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("window.sessionStorage.clear();")
+    jsExecutor.executeScript("window.localStorage.clear();")
+  }
+
   def navigateToAuthPage(): Unit =
     try {
       driver.manage().deleteAllCookies()
+      clearBrowserCache()
       navigateTo(url)
     } catch {
       case e: Exception =>
