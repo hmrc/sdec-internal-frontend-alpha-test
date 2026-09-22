@@ -371,17 +371,14 @@ class CreateThreadSpec extends BaseSpec {
       CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
       CreateThreadPage.enterDate("", "11", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
-
       And("the Test User sees the response date error message")
       CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the day part of the date")
       CreateThreadPage.enterDate("11", "", "2026")
       CreateThreadPage.selectSubmitMessageDetailsButton()
-
       And("the Test User sees the response date error message")
       CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the month part of the date")
       CreateThreadPage.enterDate("11", "11", "")
       CreateThreadPage.selectSubmitMessageDetailsButton()
-
       And("the Test User sees the response date error message")
       CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the year part of the date")
 
