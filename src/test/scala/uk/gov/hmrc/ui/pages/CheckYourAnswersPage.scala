@@ -25,17 +25,22 @@ object CheckYourAnswersPage extends BasePage {
   val clickConfirmAndSubmitButton: By = By.xpath(
     "//button[@type='submit' and @class='govuk-button' and @data-module='govuk-button' and contains(text(), 'Confirm and send')]"
   )
-  val whoAreYouContactingPage:      By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[2]/a")
-  val threadDetailsPage:            By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[2]/a")
-  val checkYourAnswersPage:         By = By.xpath("//*[@id=\"main-content\"]/div[1]/div/h1")
-  val verifyNameUpdate:             By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
-  val verifyDateUpdate:             By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[2]/dd[1]")
-  val theirNameValue:               By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
-  val emailAddressValue:            By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[2]/dd[1]")
-  val mobileNumberValue:            By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[3]/dd[1]")
-  val niNumberValue:                By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[4]/dd[1]")
-  val relatedCaseValue:             By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[5]/dd[1]")
-  val relatedReferenceNumberValue:  By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[6]/dd[1]")
+  val whoAreYouContactingPage: By = By.cssSelector(
+    "dl.govuk-summary-list > div:nth-child(1) > dd.govuk-summary-list__actions > a.govuk-link"
+  ) // *[@id="main-content"]/div/div/form/h1//*[@id="main-content"]/div[2]/div/dl[1]/div[1]/dd[2]/a
+  val threadDetailsPage: By = By.cssSelector(
+    "dl.govuk-summary-list:nth-of-type(2) > div:nth-child(1) > dd.govuk-summary-list__actions > a.govuk-link"
+  )
+  val checkYourAnswersPage: By = By.cssSelector("h1.govuk-heading-l")
+  val verifyNameUpdate:     By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[1]/div[1]/dd[1]")
+  val verifyDateUpdate:     By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[2]/dd[1]")
+  val theirNameValue:    By = By.cssSelector("dl.govuk-summary-list > div:nth-child(1) > dd.govuk-summary-list__value")
+  val emailAddressValue: By = By.cssSelector("dl.govuk-summary-list > div:nth-child(2) > dd.govuk-summary-list__value")
+  val mobileNumberValue: By = By.cssSelector("dl.govuk-summary-list > div:nth-child(3) > dd.govuk-summary-list__value")
+  val niNumberValue:     By = By.cssSelector("dl.govuk-summary-list > div:nth-child(4) > dd.govuk-summary-list__value")
+  val relatedCaseValue:  By = By.cssSelector("dl.govuk-summary-list > div:nth-child(5) > dd.govuk-summary-list__value")
+  val relatedReferenceNumberValue: By =
+    By.cssSelector("dl.govuk-summary-list > div:nth-child(6) > dd.govuk-summary-list__value")
   val messageValue:                 By = By.xpath("//*[@id=\"main-content\"]/div[2]/div/dl[2]/div[1]/dd[1]/text()")
   val threadReferenceNumberLocator: By = By.cssSelector(".govuk-caption-l")
   val responseRequiredDateLocator:  By = By.cssSelector("p.govuk-body strong")
