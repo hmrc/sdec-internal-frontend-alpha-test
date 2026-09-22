@@ -39,7 +39,7 @@ class WorkspaceSpec extends BaseSpec {
       When("the dashboard page loads")
 
       Then("""a "Create thread" button must be displayed""")
-      CreateThreadPage.getThreadButtonText shouldBe "Create new thread"
+      CreateThreadPage.isCreateThreadButtonEnabled shouldBe true
     }
 
     Scenario("View Thread Information", AcceptanceTests) {
