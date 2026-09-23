@@ -33,6 +33,10 @@ object AuthLoginPage extends BrowserDriver with BasePage {
   val clickSignatureValid: By     = By.xpath("//input[@id='valid'][@name='signature']")
   val rolesTextarea:       By     = By.xpath("//textarea[@id='roles'][@name='roles']")
   val submitButtonClick:   By     = By.xpath("//button[@type='submit' and @id='continue-button']")
+  val authHeadingPage:     By     = By.cssSelector("span.govuk-service-navigation__text")
+
+  def getAuthHeadingPageText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(authHeadingPage)).getText.trim
 
   def getEnterPidNameInput: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(pidName))

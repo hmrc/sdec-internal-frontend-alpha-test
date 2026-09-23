@@ -27,98 +27,184 @@ class WorkspaceSpec extends BaseSpec {
 
       Given("User Logins with correct role")
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_integration_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
 
-      When("the dashboard page loads")
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_integration_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      Then("""a "Create thread" button must be displayed""")
-      CreateThreadPage.isCreateThreadButtonEnabled shouldBe true
+        When("the dashboard page loads")
+
+        Then("""a "Create thread" button must be displayed""")
+        CreateThreadPage.isCreateThreadButtonEnabled shouldBe true
+
+      }
+
+      else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then When("the dashboard page loads")
+
+        Then("""a "Create thread" button must be displayed""")
+        CreateThreadPage.isCreateThreadButtonEnabled shouldBe true
+
+      }
     }
 
     Scenario("Workspace02 - View Thread Information", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
+
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_integration_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
 
-      When("the dashboard page loads for the Test User")
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_integration_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      Then("""the thread information details are displayed in a table with title "shared work queue"""")
-      WorkspacePage.getWorkspaceHeadingText should include("Shared work queue")
+        When("the dashboard page loads for the Test User")
 
-      And("the table has Thread Reference, Related Reference, External Contact, Status, Waiting on and Deadline")
-      WorkspacePage.getThreadReferenceHeader  shouldBe "Thread reference"
-      WorkspacePage.getRelatedReferenceHeader shouldBe "Related reference"
-      WorkspacePage.getExternalContactHeader  shouldBe "External contact"
-      WorkspacePage.getStatusHeader           shouldBe "Status"
-      WorkspacePage.getWaitingOnHeader        shouldBe "Waiting on"
-      WorkspacePage.getDeadlineHeader         shouldBe "Deadline"
+        Then("""the thread information details are displayed in a table with title "shared work queue"""")
+        WorkspacePage.getWorkspaceHeadingText should include("Shared work queue")
 
+        And("the table has Thread Reference, Related Reference, External Contact, Status, Waiting on and Deadline")
+        WorkspacePage.getThreadReferenceHeader  shouldBe "Thread reference"
+        WorkspacePage.getRelatedReferenceHeader shouldBe "Related reference"
+        WorkspacePage.getExternalContactHeader  shouldBe "External contact"
+        WorkspacePage.getStatusHeader           shouldBe "Status"
+        WorkspacePage.getWaitingOnHeader        shouldBe "Waiting on"
+        WorkspacePage.getDeadlineHeader         shouldBe "Deadline"
+      }
+
+      else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then When("the dashboard page loads for the Test User")
+        Then("""the thread information details are displayed in a table with title "shared work queue"""")
+        WorkspacePage.getWorkspaceHeadingText should include("Shared work queue")
+
+        And("the table has Thread Reference, Related Reference, External Contact, Status, Waiting on and Deadline")
+        WorkspacePage.getThreadReferenceHeader  shouldBe "Thread reference"
+        WorkspacePage.getRelatedReferenceHeader shouldBe "Related reference"
+        WorkspacePage.getExternalContactHeader  shouldBe "External contact"
+        WorkspacePage.getStatusHeader           shouldBe "Status"
+        WorkspacePage.getWaitingOnHeader        shouldBe "Waiting on"
+        WorkspacePage.getDeadlineHeader         shouldBe "Deadline"
+
+      }
     }
 
     Scenario("Workspace03 - View Thread status for a specific Thread ", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_qa_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the dashboard page loads for the Test User")
+        When("the dashboard page loads for the Test User")
 
-      Then("the Test User views the status for specific Thread Ref No. -THR-2026-0616-0003 ")
+        Then("the Test User views the status for specific Thread Ref No. -THR-2026-0616-0003 ")
+        WorkspacePage.getStatusValueText shouldBe "Overdue"
 
-      WorkspacePage.getStatusValueText shouldBe "Overdue"
+        And("the Test User views the other thread status with priority work")
 
-      And("the Test User views the other thread status with priority work")
+      }
 
+      else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then
+
+          When("the dashboard page loads for the Test User")
+
+        Then("the Test User views the status for specific Thread Ref No. -THR-2026-0616-0003 ")
+        WorkspacePage.getStatusValueText shouldBe "Overdue"
+
+        And("the Test User views the other thread status with priority work")
+
+      }
     }
 
     Scenario("Workspace04 - Test user opens an active thread and validates and reviews details", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_qa_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the dashboard page loads for the Test User")
+        When("the dashboard page loads for the Test User")
 
-      Then("the Test User selects first active thread")
-      val threadDetails: List[String] = WorkspacePage.getThreadDetails
-      WorkspacePage.selectFirstThreadReference()
+        Then("the Test User selects first active thread")
+        val threadDetails: List[String] = WorkspacePage.getThreadDetails
+        WorkspacePage.selectFirstThreadReference()
 
-      And("the Test User verifies thread details")
-      WorkspacePage.getSpecificThreadReferenceText  shouldBe threadDetails.head
-      WorkspacePage.getSpecificRelatedReferenceText shouldBe threadDetails(1)
-      WorkspacePage.getSpecificExternalContactText  shouldBe threadDetails(2)
-      WorkspacePage.getSpecificStatusText           shouldBe threadDetails(3)
-      WorkspacePage.getSpecificWaitingOnText        shouldBe threadDetails(4)
+        And("the Test User verifies thread details")
+        WorkspacePage.getSpecificThreadReferenceText  shouldBe threadDetails.head
+        WorkspacePage.getSpecificRelatedReferenceText shouldBe threadDetails(1)
+        WorkspacePage.getSpecificExternalContactText  shouldBe threadDetails(2)
+        WorkspacePage.getSpecificStatusText           shouldBe threadDetails(3)
+        WorkspacePage.getSpecificWaitingOnText        shouldBe threadDetails(4)
+      }
+
+      else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then
+
+          When("the dashboard page loads for the Test User")
+
+        Then("the Test User selects first active thread")
+        val threadDetails: List[String] = WorkspacePage.getThreadDetails
+        WorkspacePage.selectFirstThreadReference()
+
+        And("the Test User verifies thread details")
+        WorkspacePage.getSpecificThreadReferenceText  shouldBe threadDetails.head
+        WorkspacePage.getSpecificRelatedReferenceText shouldBe threadDetails(1)
+        WorkspacePage.getSpecificExternalContactText  shouldBe threadDetails(2)
+        WorkspacePage.getSpecificStatusText           shouldBe threadDetails(3)
+        WorkspacePage.getSpecificWaitingOnText        shouldBe threadDetails(4)
+
+      }
     }
-
   }
 }

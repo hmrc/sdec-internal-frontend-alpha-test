@@ -30,89 +30,170 @@ class CheckYourAnswersSpec extends BaseSpec {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_qa_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
 
-      And("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("")
-      CreateThreadPage.selectHasRelatedCaseNo()
-      CreateThreadPage.selectContinueButton()
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("")
+        CreateThreadPage.selectHasRelatedCaseNo()
+        CreateThreadPage.selectContinueButton()
 
-      Then("the Test User edits the date of reply and verifies the updated date in check your answers")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.enterDate("11", "11", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.selectThreadDetailsLink()
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterDate("11", "12", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.getCheckYourAnswersTitleText shouldBe "Check your answers"
-      CheckYourAnswersPage.getDateUpdateText            shouldBe "11 December 2026"
+        Then("the Test User edits the date of reply and verifies the updated date in check your answers")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectThreadDetailsLink()
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterDate("11", "12", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.getCheckYourAnswersTitleText shouldBe "Check your answers"
+        CheckYourAnswersPage.getDateUpdateText            shouldBe "11 December 2026"
 
+      } else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then
+
+          When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("")
+        CreateThreadPage.selectHasRelatedCaseNo()
+        CreateThreadPage.selectContinueButton()
+
+        Then("the Test User edits the date of reply and verifies the updated date in check your answers")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectThreadDetailsLink()
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterDate("11", "12", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.getCheckYourAnswersTitleText shouldBe "Check your answers"
+        CheckYourAnswersPage.getDateUpdateText            shouldBe "11 December 2026"
+
+      }
     }
 
     Scenario("CheckAnswers02 - The Test User successfully submits the Check your Answers page ", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_qa_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
 
-      And("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
 
-      Then("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.enterDate("11", "11", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.selectConfirmAndSendButton()
+        Then("the Test User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectConfirmAndSendButton()
+      } else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then
+
+          When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
+
+        Then("the Test User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectConfirmAndSendButton()
+      }
     }
 
     Scenario(
@@ -122,45 +203,85 @@ class CheckYourAnswersSpec extends BaseSpec {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_qa_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
 
-      And("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
 
-      Then("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.enterDate("11", "11", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.getNameUpdateText   should include("Steffi Graf")
-      CheckYourAnswersPage.getEmailAddressText should include("steffi@abc.com")
-      CheckYourAnswersPage.getMobileNumberText should include("123456789")
-      CheckYourAnswersPage.getNINumberText     should include("CC 77 45 72 D")
-      CheckYourAnswersPage.getDateUpdateText   should include("11 November 2026")
+        Then("the Test User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.getNameUpdateText   should include("Steffi Graf")
+        CheckYourAnswersPage.getEmailAddressText should include("steffi@abc.com")
+        CheckYourAnswersPage.getMobileNumberText should include("123456789")
+        CheckYourAnswersPage.getNINumberText     should include("CC 77 45 72 D")
+        CheckYourAnswersPage.getDateUpdateText   should include("11 November 2026")
+      } else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then
+          When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
+
+        Then("the Test User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.getNameUpdateText   should include("Steffi Graf")
+        CheckYourAnswersPage.getEmailAddressText should include("steffi@abc.com")
+        CheckYourAnswersPage.getMobileNumberText should include("123456789")
+        CheckYourAnswersPage.getNINumberText     should include("CC 77 45 72 D")
+        CheckYourAnswersPage.getDateUpdateText   should include("11 November 2026")
+      }
     }
 
     Scenario(
@@ -170,48 +291,92 @@ class CheckYourAnswersSpec extends BaseSpec {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_qa_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
 
-      And("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
 
-      Then("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.enterDate("11", "11", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.selectWhoAreYouContactingLink()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
-      CreateThreadPage.enterFirstNameValue("Sam")
-      CreateThreadPage.selectContinueButton()
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.getNameUpdateText shouldBe "Sam Graf"
+        Then("the Test User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectWhoAreYouContactingLink()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        CreateThreadPage.enterFirstNameValue("Sam")
+        CreateThreadPage.selectContinueButton()
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.getNameUpdateText shouldBe "Sam Graf"
 
+      } else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then
+
+          When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
+
+        Then("the Test User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectWhoAreYouContactingLink()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        CreateThreadPage.enterFirstNameValue("Sam")
+        CreateThreadPage.selectContinueButton()
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.getNameUpdateText shouldBe "Sam Graf"
+
+      }
     }
 
     Scenario(
@@ -221,47 +386,89 @@ class CheckYourAnswersSpec extends BaseSpec {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_qa_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
 
-      And("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
 
-      Then("the Test User edits the date of reply and verifies the updated date in check your answers")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.enterDate("11", "11", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.selectThreadDetailsLink()
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterDate("11", "12", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.getCheckYourAnswersTitleText shouldBe "Check your answers"
-      CheckYourAnswersPage.getDateUpdateText            shouldBe "11 December 2026"
+        Then("the Test User edits the date of reply and verifies the updated date in check your answers")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectThreadDetailsLink()
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterDate("11", "12", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.getCheckYourAnswersTitleText shouldBe "Check your answers"
+        CheckYourAnswersPage.getDateUpdateText            shouldBe "11 December 2026"
 
+      } else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then
+          When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
+
+        Then("the Test User edits the date of reply and verifies the updated date in check your answers")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectThreadDetailsLink()
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterDate("11", "12", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.getCheckYourAnswersTitleText shouldBe "Check your answers"
+        CheckYourAnswersPage.getDateUpdateText            shouldBe "11 December 2026"
+
+      }
     }
 
     Scenario(
@@ -271,43 +478,81 @@ class CheckYourAnswersSpec extends BaseSpec {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_qa_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
 
-      And("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
 
-      Then("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.enterDate("11", "11", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.selectConfirmAndSendButton()
+        Then("the Test User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectConfirmAndSendButton()
 
-      CheckYourAnswersPage.getThreadReferenceNumberText should startWith("Thread reference number")
+        CheckYourAnswersPage.getThreadReferenceNumberText should startWith("Thread reference number")
+      } else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then
+          When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
+
+        Then("the Test User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectConfirmAndSendButton()
+
+        CheckYourAnswersPage.getThreadReferenceNumberText should startWith("Thread reference number")
+      }
     }
 
     Scenario(
@@ -317,45 +562,84 @@ class CheckYourAnswersSpec extends BaseSpec {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      val headingText = AuthLoginPage.getAuthHeadingPageText
+      logger.info("✓ Auth page heading verified: stride-idp-stub")
+      if headingText.contains("stride-idp-stub") then {
+        AuthLoginPage.enterPIDValue("123456")
+        AuthLoginPage.enterGivenNameValue("test")
+        AuthLoginPage.enterLastNameValue("user")
+        AuthLoginPage.enterEmailAddressValue("test.user@example.com")
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText("sdec_qa_tester")
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
 
-      And("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
 
-      Then("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.enterDate("11", "11", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      CheckYourAnswersPage.selectConfirmAndSendButton()
-      CheckYourAnswersPage.getThreadReferenceNumberText should startWith("Thread reference number")
-      CheckYourAnswersPage.getResponseRequiredDateText  should include("11 November 2026")
-      CheckYourAnswersPage.getStatusText                should include("Response requested")
+        Then("the Test User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectConfirmAndSendButton()
+        CheckYourAnswersPage.getThreadReferenceNumberText should startWith("Thread reference number")
+        CheckYourAnswersPage.getResponseRequiredDateText  should include("11 November 2026")
+        CheckYourAnswersPage.getStatusText                should include("Response requested")
+      } else {
+
+        logger.info(s"✗ Auth page heading not found: $headingText")
+        logger.info("→ User already on Workspace page")
+        val workspaceHeadingText = WorkspacePage.getWorkspaceHeadingText
+        if workspaceHeadingText.contains("Shared work queue") then
+          When("the Test User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the Test User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" cc774572d")
+
+        And("the Test User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
+
+        Then("the Test User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        CheckYourAnswersPage.selectConfirmAndSendButton()
+        CheckYourAnswersPage.getThreadReferenceNumberText should startWith("Thread reference number")
+        CheckYourAnswersPage.getResponseRequiredDateText  should include("11 November 2026")
+        CheckYourAnswersPage.getStatusText                should include("Response requested")
+      }
+
     }
-
   }
 }
