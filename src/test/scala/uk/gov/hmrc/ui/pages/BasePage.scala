@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.ui.pages
 
+import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.WebDriverWait
-import org.openqa.selenium.{By, JavascriptExecutor}
 import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.selenium.component.PageObject
 import uk.gov.hmrc.selenium.webdriver.Driver
@@ -35,12 +35,8 @@ trait BasePage extends Matchers with PageObject {
     click(locator)
   }
 
-  def navigateTo(url: String, timeoutSeconds: Long = 5): Unit = {
-    val driver = Driver.instance
-    val js     = driver.asInstanceOf[JavascriptExecutor]
-
-    js.executeScript(s"window.location.href='$url'")
-  }
+  def navigateTo(url: String): Unit =
+    Driver.instance.navigate().to(url)
 
   def assertLocatorPresent(locator: By): Unit = {
     val elements = Driver.instance.findElements(locator).asScala
@@ -50,5 +46,5 @@ trait BasePage extends Matchers with PageObject {
     )
   }
 
-  def webDriverWait = new WebDriverWait(driver, Duration.ofMillis(5000L))
+  def webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(7))
 }
