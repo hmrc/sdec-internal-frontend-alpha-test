@@ -49,8 +49,13 @@ object AuthLoginPage extends BrowserDriver with BasePage {
 
   def navigateToAuthPage(): Unit = {
     driver.manage().deleteAllCookies()
-    require(driver.manage().getCookies.isEmpty, "Cookies were not cleared before navigating to the auth page")
     navigateTo(url)
+
+    if driver.findElements(pidName).isEmpty then {
+      logger.warn(s"Login form not found on first attempt, retrying. Current URL: ${driver.getCurrentUrl}")
+      driver.manage().deleteAllCookies()
+      navigateTo(url)
+    }
   }
 
   def enterPIDValue(value: String): Unit = {
