@@ -50,5 +50,5 @@ trait BasePage extends Matchers with PageObject {
     )
   }
 
-  def webDriverWait = new WebDriverWait(driver, Duration.ofMillis(5000L))
+  def webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(10))
 }
