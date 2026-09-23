@@ -174,7 +174,6 @@ class CreateThreadSpec extends BaseSpec {
       )
       CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
       CreateThreadPage.selectSubmitMessageDetailsButton()
-
     }
 
     Scenario(

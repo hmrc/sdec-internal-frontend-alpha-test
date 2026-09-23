@@ -16,23 +16,24 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
+import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.{By, JavascriptExecutor, WebElement}
 import uk.gov.hmrc.ui.conf.TestConfiguration
 import uk.gov.hmrc.ui.driver.BrowserDriver
-import java.time.Duration
 
 object AuthLoginPage extends BrowserDriver with BasePage {
 
-  val url:                 String = TestConfiguration.url("sdec-internal-frontend")
-  val pidName:             By     = By.id("pid")
-  val givenName:           By     = By.id("usersGivenName")
-  val lastName:            By     = By.id("usersSurname")
-  val emailAddress:        By     = By.id("emailAddress")
-  val clickStatusSuccess:  By     = By.xpath("//input[@id='success'][@name='status']")
-  val clickSignatureValid: By     = By.xpath("//input[@id='valid'][@name='signature']")
-  val rolesTextarea:       By     = By.xpath("//textarea[@id='roles'][@name='roles']")
-  val submitButtonClick:   By     = By.xpath("//button[@type='submit' and @id='continue-button']")
+  val url: String = TestConfiguration.url("sdec-internal-frontend")
+
+  val pidName:      By = By.cssSelector(".govuk-form-group input#pid")
+  val givenName:    By = By.cssSelector(".govuk-form-group input#usersGivenName")
+  val lastName:     By = By.cssSelector(".govuk-form-group input#usersSurname")
+  val emailAddress: By = By.cssSelector(".govuk-form-group input#emailAddress")
+
+  val clickStatusSuccess:  By = By.xpath("//input[@id='success'][@name='status']")
+  val clickSignatureValid: By = By.xpath("//input[@id='valid'][@name='signature']")
+  val rolesTextarea:       By = By.xpath("//textarea[@id='roles'][@name='roles']")
+  val submitButtonClick:   By = By.xpath("//button[@type='submit' and @id='continue-button']")
 
   def getEnterPidNameInput: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(pidName))
@@ -80,16 +81,7 @@ object AuthLoginPage extends BrowserDriver with BasePage {
     input.sendKeys(value)
   }
 
-  def selectConfirmAndSendButton(): Unit = {
-    val continueButton = webDriverWait.until(ExpectedConditions.elementToBeClickable(submitButtonClick))
-
-    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
-    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", continueButton)
-
-    webDriverWait.until(ExpectedConditions.elementToBeClickable(submitButtonClick))
-
-    jsExecutor.executeScript("arguments[0].click();", continueButton)
-  }
+  def selectConfirmAndSendButton(): Unit = clickAndWaitForNavigation(submitButtonClick)
 
   def getClickStatusSuccessInput: Boolean = {
     val radioElement = webDriverWait.until(

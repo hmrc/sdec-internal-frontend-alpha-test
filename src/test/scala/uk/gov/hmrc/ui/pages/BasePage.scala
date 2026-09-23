@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.By
-import org.openqa.selenium.support.ui.WebDriverWait
+import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
+import org.openqa.selenium.{By, JavascriptExecutor}
 import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.selenium.component.PageObject
 import uk.gov.hmrc.selenium.webdriver.Driver
@@ -46,5 +46,18 @@ trait BasePage extends Matchers with PageObject {
     )
   }
 
-  def webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(7))
+  def clickAndWaitForNavigation(locator: By): Unit = {
+    val element = webDriverWait.until(ExpectedConditions.elementToBeClickable(locator))
+
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", element)
+
+    val currentPage = driver.findElement(By.tagName("html"))
+
+    jsExecutor.executeScript("arguments[0].click();", element)
+
+    webDriverWait.until(ExpectedConditions.stalenessOf(currentPage))
+  }
+
+  def webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(15))
 }
