@@ -24,7 +24,7 @@ class CheckYourAnswersSpec extends BaseSpec {
   Feature("Internal User Journey - Check Your Answers Page") {
 
     Scenario(
-      "The Test User selects No for existing case option, then Related Case Reference row will not show in Check your answers page",
+      "CheckAnswers01 - The Test User selects No for existing case option, then Related Case Reference row will not show in Check your answers page",
       AcceptanceTests
     ) {
 
@@ -74,7 +74,7 @@ class CheckYourAnswersSpec extends BaseSpec {
 
     }
 
-    Scenario("The Test User successfully submits the Check your Answers page ", AcceptanceTests) {
+    Scenario("CheckAnswers02 - The Test User successfully submits the Check your Answers page ", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
@@ -115,7 +115,10 @@ class CheckYourAnswersSpec extends BaseSpec {
       CheckYourAnswersPage.selectConfirmAndSendButton()
     }
 
-    Scenario("The Test User validates contact details and date in Check your answers page", AcceptanceTests) {
+    Scenario(
+      "CheckAnswers03 - The Test User validates contact details and date in Check your answers page",
+      AcceptanceTests
+    ) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
@@ -160,7 +163,10 @@ class CheckYourAnswersSpec extends BaseSpec {
       CheckYourAnswersPage.getDateUpdateText   should include("11 November 2026")
     }
 
-    Scenario("The Test User successfully amends the name in who are you contacting page", AcceptanceTests) {
+    Scenario(
+      "CheckAnswers04 - The Test User successfully amends the name in who are you contacting page",
+      AcceptanceTests
+    ) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
@@ -208,7 +214,10 @@ class CheckYourAnswersSpec extends BaseSpec {
 
     }
 
-    Scenario("The Test User successfully amends the date in check your Answers page", AcceptanceTests) {
+    Scenario(
+      "CheckAnswers05 - The Test User successfully amends the date in check your Answers page",
+      AcceptanceTests
+    ) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
@@ -256,7 +265,7 @@ class CheckYourAnswersSpec extends BaseSpec {
     }
 
     Scenario(
-      "The Test User successfully submits the Check your Answers page  and verifies thread reference number is displayed",
+      "CheckAnswers06 - The Test User successfully submits the Check your Answers page  and verifies thread reference number is displayed",
       AcceptanceTests
     ) {
 
@@ -302,7 +311,7 @@ class CheckYourAnswersSpec extends BaseSpec {
     }
 
     Scenario(
-      "The Test User successfully submits the Check your Answers page  and verifies response date and status of thread",
+      "CheckAnswers07 - The Test User successfully submits the Check your Answers page  and verifies response date and status of thread",
       AcceptanceTests
     ) {
 

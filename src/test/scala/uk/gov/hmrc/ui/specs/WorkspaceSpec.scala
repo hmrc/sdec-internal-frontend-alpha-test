@@ -23,7 +23,7 @@ import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 class WorkspaceSpec extends BaseSpec {
   Feature("Internal User Journey - Workspace ") {
 
-    Scenario("Get Landing Page with correct Role for test user", AcceptanceTests) {
+    Scenario("Workspace01 - Get Landing Page with correct Role for test user", AcceptanceTests) {
 
       Given("User Logins with correct role")
       AuthLoginPage.navigateToAuthPage()
@@ -42,7 +42,7 @@ class WorkspaceSpec extends BaseSpec {
       CreateThreadPage.isCreateThreadButtonEnabled shouldBe true
     }
 
-    Scenario("View Thread Information", AcceptanceTests) {
+    Scenario("Workspace02 - View Thread Information", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
@@ -70,7 +70,7 @@ class WorkspaceSpec extends BaseSpec {
 
     }
 
-    Scenario("View Thread status for a specific Thread ", AcceptanceTests) {
+    Scenario("Workspace03 - View Thread status for a specific Thread ", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
@@ -93,7 +93,7 @@ class WorkspaceSpec extends BaseSpec {
 
     }
 
-    Scenario("Test user opens an active thread and validates and reviews details", AcceptanceTests) {
+    Scenario("Workspace04 - Test user opens an active thread and validates and reviews details", AcceptanceTests) {
 
       Given("Test User Logins with Credential ID")
       AuthLoginPage.navigateToAuthPage()
