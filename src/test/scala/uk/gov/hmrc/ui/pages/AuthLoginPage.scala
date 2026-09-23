@@ -53,7 +53,7 @@ object AuthLoginPage extends BrowserDriver with BasePage {
       navigateTo(url)
     } catch {
       case e: Exception =>
-        println(s"Error clearing cache: ${e.getMessage}")
+        logger.warn(s"Error clearing cache: ${e.getMessage}")
         navigateTo(url)
     }
 

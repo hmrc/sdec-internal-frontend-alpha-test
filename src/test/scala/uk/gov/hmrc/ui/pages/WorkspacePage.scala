@@ -168,7 +168,6 @@ object WorkspacePage extends BasePage {
       firstWaitingOnText
     )
 
-    threadDetails.foreach(println)
     threadDetails
   }
 
