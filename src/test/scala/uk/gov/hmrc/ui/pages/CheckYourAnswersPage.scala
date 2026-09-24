@@ -144,43 +144,10 @@ object CheckYourAnswersPage extends BasePage {
     headingText
   }
 
-  def selectThreadDetailsLink(): Unit = {
-    val changeLink = webDriverWait.until(
-      ExpectedConditions.elementToBeClickable(threadDetailsPage)
-    )
+  def selectThreadDetailsLink(): Unit = clickAndWaitForNavigation(threadDetailsPage)
 
-    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
-    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", changeLink)
+  def selectWhoAreYouContactingLink(): Unit = clickAndWaitForNavigation(whoAreYouContactingPage)
 
-    webDriverWait.until(ExpectedConditions.elementToBeClickable(changeLink))
-
-    jsExecutor.executeScript("arguments[0].click();", changeLink)
-  }
-
-  def selectWhoAreYouContactingLink(): Unit = {
-    val changeLink = webDriverWait.until(
-      ExpectedConditions.elementToBeClickable(whoAreYouContactingPage)
-    )
-
-    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
-    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", changeLink)
-
-    webDriverWait.until(ExpectedConditions.elementToBeClickable(changeLink))
-
-    jsExecutor.executeScript("arguments[0].click();", changeLink)
-  }
-
-  def selectConfirmAndSendButton(): Unit = {
-    val confirmAndSendButton = webDriverWait.until(
-      ExpectedConditions.elementToBeClickable(clickConfirmAndSubmitButton)
-    )
-
-    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
-    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", confirmAndSendButton)
-
-    webDriverWait.until(ExpectedConditions.elementToBeClickable(confirmAndSendButton))
-
-    jsExecutor.executeScript("arguments[0].click();", confirmAndSendButton)
-  }
+  def selectConfirmAndSendButton(): Unit = clickAndWaitForNavigation(clickConfirmAndSubmitButton)
 
 }

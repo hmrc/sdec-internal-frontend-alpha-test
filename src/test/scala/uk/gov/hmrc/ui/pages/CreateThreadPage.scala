@@ -200,18 +200,7 @@ object CreateThreadPage extends BasePage {
   def selectClickYesButton(): Unit =
     getClickYesExistingCaseInput.click()
 
-  def selectContinueButton(): Unit = {
-    val continueButton = webDriverWait.until(
-      ExpectedConditions.elementToBeClickable(clickContinueButton)
-    )
-
-    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
-    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", continueButton)
-
-    webDriverWait.until(ExpectedConditions.elementToBeClickable(continueButton))
-
-    jsExecutor.executeScript("arguments[0].click();", continueButton)
-  }
+  def selectContinueButton(): Unit = clickAndWaitForNavigation(clickContinueButton)
 
   def isIntroTextDisplayedBeforeButton: Boolean = {
     val introLocation = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(introTextLocator)).getLocation
