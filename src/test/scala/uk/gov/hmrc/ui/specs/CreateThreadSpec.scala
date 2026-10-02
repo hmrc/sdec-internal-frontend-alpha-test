@@ -17,535 +17,558 @@
 package uk.gov.hmrc.ui.specs
 
 import org.scalatest.featurespec.AnyFeatureSpec
+import uk.gov.hmrc.ui.TestData.AuthTestData
+import org.scalatest.prop.TableDrivenPropertyChecks
 import uk.gov.hmrc.ui.pages.{AuthLoginPage, CheckYourAnswersPage, CreateThreadPage}
-import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
+import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 
-class CreateThreadSpec extends BaseSpec {
+class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
   Feature("Internal User Journey - Create Thread page") {
 
     Scenario("Create Thread Button is visible and must be selectable", AcceptanceTests) {
+      forAll(AuthTestData.credentialsWithPassword) { (pid, givenName, surName, email, roles) =>
+        Given("All types of  User Logins with Credential ID")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+        When("""the User views a "Create thread" button """)
+        CreateThreadPage.isCreateThreadButtonDisplayed shouldBe true
 
-      When("""the Test User views a "Create thread" button """)
-      CreateThreadPage.isCreateThreadButtonDisplayed shouldBe true
+        And("the button must be selectable")
+        CreateThreadPage.isCreateThreadButtonEnabled shouldBe true
 
-      And("the button must be selectable")
-      CreateThreadPage.isCreateThreadButtonEnabled shouldBe true
+        And("the button must follow GOV.UK Design System standards")
+        CreateThreadPage.getThreadButtonText should include("Create new thread")
 
-      And("the button must follow GOV.UK Design System standards")
-      CreateThreadPage.getThreadButtonText should include("Create new thread")
-
-      Then("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
-
+        Then("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+      }
     }
 
     Scenario(
-      "The Test User enters the contact details incorrectly and validation message captured",
+      "The Child Benefits User enters the contact details incorrectly and validation message captured",
       AcceptanceTests
     ) {
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      forAll(AuthTestData.usersWithChildBenefits) { (pid, givenName, surName, email, roles) =>
+        Given("Child Benefits User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      Then("the Test User does not enter the details and the error message captured")
+        Then("the User does not enter the details and the error message captured")
+        CreateThreadPage.enterFirstNameValue("")
+        CreateThreadPage.enterLastNameValue("")
+        CreateThreadPage.enterEmailAddressValue("")
+        CreateThreadPage.enterPhoneNumberValue("")
+        CreateThreadPage.enterNationalInsuranceValue("")
+        CreateThreadPage.selectContinueButton()
+        CreateThreadPage.getErrorFirstName               should include("Enter a first name")
+        CreateThreadPage.getErrorLastName                should include("Enter a last name")
+        CreateThreadPage.getErrorEmailAddress            should include("Enter an email address")
+        CreateThreadPage.getErrorPhoneNumber             should include("Enter a mobile number")
+        CreateThreadPage.getErrorNationalInsuranceNumber should include("Enter a National Insurance number")
 
-      CreateThreadPage.enterFirstNameValue("")
-      CreateThreadPage.enterLastNameValue("")
-      CreateThreadPage.enterEmailAddressValue("")
-      CreateThreadPage.enterPhoneNumberValue("")
-      CreateThreadPage.enterNationalInsuranceValue("")
-      CreateThreadPage.selectContinueButton()
-      CreateThreadPage.getErrorFirstName               should include("Enter a first name")
-      CreateThreadPage.getErrorLastName                should include("Enter a last name")
-      CreateThreadPage.getErrorEmailAddress            should include("Enter an email address")
-      CreateThreadPage.getErrorPhoneNumber             should include("Enter a mobile number")
-      CreateThreadPage.getErrorNationalInsuranceNumber should include("Enter a National Insurance number")
+      }
+    }
+    Scenario(
+      "The Pensions User enters the contact details with invalid format for National Insurance Number",
+      AcceptanceTests
+    ) {
 
+      forAll(AuthTestData.usersWithPensions) { (pid, givenName, surName, email, roles) =>
+        Given("Pensions User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
+
+        When("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the User enters the external user's incorrect National insurance number")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 ")
+
+        And("the User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseNo()
+        CreateThreadPage.selectContinueButton()
+
+        Then("the user gets a error message for entering the correct National Insurance number")
+        CreateThreadPage.getErrorNationalInsuranceNumber should include(
+          "Enter a National Insurance number in the correct format, like QQ 12 34 56 C"
+        )
+
+      }
+    }
+    Scenario(
+      "The both child benefits and Tax User enters the contact details and adds message details with character limit and yes related case",
+      AcceptanceTests
+    ) {
+
+      forAll(AuthTestData.usersWithBothRoles) { (pid, givenName, surName, email, roles) =>
+        Given("Pensions and child Benefits User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
+
+        When("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the User enters the correct external user details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
+
+        Then("the User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
+
+        And("the User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
+            "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
+            "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
+            "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
+            "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
+            "dictum felis eu pede mollis pretium. Integer tincidunt. " +
+            "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
+            "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+      }
     }
 
     Scenario(
-      "The Test User enters the contact details with invalid format for National Insurance Number",
+      "The User with No roles enters the contact details and adds message details with character limit exceeded and no related case",
       AcceptanceTests
     ) {
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      forAll(AuthTestData.usersWithNoRoles) { (pid, givenName, surName, email, roles) =>
+        Given("User with no roles Logs in ")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the incorrect National insurance number")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 ")
+        And("the User enters the external user's correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
 
-      And("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseNo()
-      CreateThreadPage.selectContinueButton()
+        And("the User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseNo()
 
-      Then("the Test user gets a error message for entering the correct National Insurance number")
-      CreateThreadPage.getErrorNationalInsuranceNumber should include(
-        "Enter a National Insurance number in the correct format, like QQ 12 34 56 C"
-      )
+        CreateThreadPage.selectContinueButton()
 
+        And(
+          "the User adds a message to the external user exceeded the character limit available and user tries to submit"
+        )
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum " +
+            "sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies " +
+            "nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla " +
+            "vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. " +
+            "Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper " +
+            "nisiLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. " +
+            "Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
+            "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, " +
+            "venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. " +
+            "Vivamus elementum semper nisi."
+        )
+        CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 65 characters too many")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+
+        And("the User gets an error message which is captured")
+        CreateThreadPage.clickErrorMessageLink()
+        val errorMessage = CreateThreadPage.errorMessageText()
+        errorMessage should include("Message must be 1,000 characters or less. You have 65 characters too many")
+      }
+    }
+
+    Scenario("The Tax User enters the contact details and clicks yes for related case", AcceptanceTests) {
+
+      forAll(AuthTestData.usersWithTax) { (pid, givenName, surName, email, roles) =>
+        Given("User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
+
+        When("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the User enters the external user's correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
+
+        Then("the User enters the no continue button")
+        CreateThreadPage.getViewNoExistingCaseText should include(
+          "Select Yes if this communication is linked to an existing case"
+        )
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
+
+      }
+    }
+
+    Scenario("Child Benefits user creates a new thread and provides valid response date for deadline", AcceptanceTests) {
+
+      forAll(AuthTestData.usersWithChildBenefits) { (pid, givenName, surName, email, roles) =>
+        Given("Child Benifits User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
+
+        When("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+
+        And("the User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
+
+        Then("the User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
+
+        And("the User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
+            "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
+            "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
+            "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
+            "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
+            "dictum felis eu pede mollis pretium. Integer tincidunt. " +
+            "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
+            "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
+        CreateThreadPage.enterDate("11", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        And("the Test User navigates to Check Your Answers page")
+        CheckYourAnswersPage.getCheckYourAnswersTitleText should include("Check your answers")
+
+      }
     }
 
     Scenario(
-      "The Test User enters the contact details and adds message details with character limit and yes related case",
+      "Pension user creates a new thread and leaves one or more of day, month or year boxes empty",
       AcceptanceTests
     ) {
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      forAll(AuthTestData.usersWithPensions) { (pid, givenName, surName, email, roles) =>
+        Given("Pensions User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
+        And("the User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 90 A")
 
-      Then("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
+        Then("the User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
 
-      And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
-          "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
-          "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
-          "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
-          "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
-          "dictum felis eu pede mollis pretium. Integer tincidunt. " +
-          "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
-          "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
+        And("the User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
+            "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
+            "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
+            "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
+            "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
+            "dictum felis eu pede mollis pretium. Integer tincidunt. " +
+            "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
+            "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
+        CreateThreadPage.enterDate("", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        And("the Test User sees the response date error message")
+        CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the day part of the date")
+        CreateThreadPage.enterDate("11", "", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        And("the Test User sees the response date error message")
+        CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the month part of the date")
+        CreateThreadPage.enterDate("11", "11", "")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        And("the Test User sees the response date error message")
+        CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the year part of the date")
+
+      }
     }
 
     Scenario(
-      "The Test User enters the contact details and adds message details with character limit exceeded and no related case",
+      "User with Both Roles creates a new thread and provides unreal value for day, month and year",
       AcceptanceTests
     ) {
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      forAll(AuthTestData.usersWithBothRoles) { (pid, givenName, surName, email, roles) =>
+        Given("Pensions and child Benefits User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
+        And("the User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
 
-      And("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseNo()
+        Then("the User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
 
-      CreateThreadPage.selectContinueButton()
+        And("the User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
+            "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
+            "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
+            "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
+            "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
+            "dictum felis eu pede mollis pretium. Integer tincidunt. " +
+            "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
+            "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
+        CreateThreadPage.enterDate("33", "11", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
 
-      And(
-        "the Test User adds a message to the external user exceeded the character limit available and user tries to submit"
-      )
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum " +
-          "sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies " +
-          "nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla " +
-          "vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. " +
-          "Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper " +
-          "nisiLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. " +
-          "Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
-          "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, " +
-          "venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. " +
-          "Vivamus elementum semper nisi."
-      )
-      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 65 characters too many")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
+        And("the User sees the response date error message")
+        CreateThreadPage.checkResponseDateErrorMessage() should include("Enter a valid response date")
+        CreateThreadPage.enterDate("11", "14", "2026")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
 
-      And("the Test User gets an error message which is captured")
-      CreateThreadPage.clickErrorMessageLink()
-      val errorMessage = CreateThreadPage.errorMessageText()
-      errorMessage should include("Message must be 1,000 characters or less. You have 65 characters too many")
-    }
+        And("the User sees the response date error message")
+        CreateThreadPage.checkResponseDateErrorMessage() should include("Enter a valid response date")
 
-    Scenario("The Test User enters the contact details and clicks yes for related case", AcceptanceTests) {
-
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
-
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
-
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
-
-      Then("the Test User enters the no continue button")
-      CreateThreadPage.getViewNoExistingCaseText should include(
-        "Select Yes if this communication is linked to an existing case"
-      )
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
-
-    }
-
-    Scenario("Test user creates a new thread and provides valid response date for deadline", AcceptanceTests) {
-
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
-
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
-
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 80 A")
-
-      Then("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
-
-      And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
-          "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
-          "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
-          "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
-          "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
-          "dictum felis eu pede mollis pretium. Integer tincidunt. " +
-          "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
-          "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
-      CreateThreadPage.enterDate("11", "11", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      And("the Test User navigates to Check Your Answers page")
-      CheckYourAnswersPage.getCheckYourAnswersTitleText should include("Check your answers")
-
+      }
     }
 
     Scenario(
-      "Test user creates a new thread and leaves one or more of day, month or year boxes empty",
+      "User with No Roles creates a new thread and provides response date in past, receives error message that response date must be a future date",
       AcceptanceTests
     ) {
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      forAll(AuthTestData.usersWithNoRoles) { (pid, givenName, surName, email, roles) =>
+        Given("User with no roles Logs in ")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" LS 17 77 90 A")
+        And("the User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
 
-      Then("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
+        Then("the User enters the no continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
 
-      And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
-          "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
-          "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
-          "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
-          "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
-          "dictum felis eu pede mollis pretium. Integer tincidunt. " +
-          "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
-          "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
-      CreateThreadPage.enterDate("", "11", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the day part of the date")
-      CreateThreadPage.enterDate("11", "", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the month part of the date")
-      CreateThreadPage.enterDate("11", "11", "")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the year part of the date")
+        And("the user adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
+            "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
+            "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
+            "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
+            "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
+            "dictum felis eu pede mollis pretium. Integer tincidunt. " +
+            "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
+            "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
+        CreateThreadPage.enterDate("11", "11", "2025")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
 
+        And("the User sees the response date error message")
+        CreateThreadPage.checkResponseDateErrorMessage() should include("The response date must be in the future")
+      }
     }
-
-    Scenario("Test user creates a new thread and provides unreal value for day, month and year", AcceptanceTests) {
-
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
-
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
-
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
-
-      Then("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
-
-      And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
-          "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
-          "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
-          "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
-          "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
-          "dictum felis eu pede mollis pretium. Integer tincidunt. " +
-          "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
-          "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
-      CreateThreadPage.enterDate("33", "11", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter a valid response date")
-      CreateThreadPage.enterDate("11", "14", "2026")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter a valid response date")
-
-    }
-
     Scenario(
-      "Test user creates a new thread and provides response date in past, receives error message that response date must be a future date",
+      "User creates a new thread and provides less than 4 characters in year field for response date, receives error message - Enter the year using 4 digits ",
       AcceptanceTests
     ) {
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      forAll(AuthTestData.usersWithTax) { (pid, givenName, surName, email, roles) =>
+        Given("User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
+        When("the User clicks on the create thread button it should navigate to the create new thread page")
+        CreateThreadPage.selectCreateThreadButton()
+        CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
 
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
+        And("the User enters the correct details")
+        CreateThreadPage.enterFirstNameValue("Steffi")
+        CreateThreadPage.enterLastNameValue("Graf")
+        CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
+        CreateThreadPage.enterPhoneNumberValue("123456789")
+        CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
 
-      Then("the Test User enters the no continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
+        Then("the User enters the Yes continue button")
+        CreateThreadPage.selectHasRelatedCaseYes()
+        CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
+        CreateThreadPage.selectContinueButton()
 
-      And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
-          "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
-          "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
-          "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
-          "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
-          "dictum felis eu pede mollis pretium. Integer tincidunt. " +
-          "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
-          "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
-      CreateThreadPage.enterDate("11", "11", "2025")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage() should include("The response date must be in the future")
+        And("the User adds a message to the external user within the character limit available")
+        CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
+        CreateThreadPage.enterMessageDetails(
+          "Lorem ipsum dolor sit amet, " +
+            "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
+            "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
+            "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
+            "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
+            "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
+            "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
+            "dictum felis eu pede mollis pretium. Integer tincidunt. " +
+            "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
+            "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
+            "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
+        )
+        CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
+        CreateThreadPage.enterDate("11", "11", "26")
+        CreateThreadPage.selectSubmitMessageDetailsButton()
+        And("the Test User sees the response date error message")
+        CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the year using 4 digits")
+      }
     }
-
-    Scenario(
-      "Test user creates a new thread and provides less than 4 characters in year field for response date, receives error message - Enter the year using 4 digits ",
-      AcceptanceTests
-    ) {
-
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
-
-      When("the Test User clicks on the create thread button it should navigate to the create new thread page")
-      CreateThreadPage.selectCreateThreadButton()
-      CreateThreadPage.getCreateThreadPageTitleText should include("Who are you contacting?")
-
-      And("the Test User enters the correct details")
-      CreateThreadPage.enterFirstNameValue("Steffi")
-      CreateThreadPage.enterLastNameValue("Graf")
-      CreateThreadPage.enterEmailAddressValue("steffi@abc.com")
-      CreateThreadPage.enterPhoneNumberValue("123456789")
-      CreateThreadPage.enterNationalInsuranceValue(" SL 67 55 80 A")
-
-      Then("the Test User enters the Yes continue button")
-      CreateThreadPage.selectHasRelatedCaseYes()
-      CreateThreadPage.enterRelatedRefNoValue("QQ 12 34 56 C")
-      CreateThreadPage.selectContinueButton()
-
-      And("the Test User adds a message to the external user within the character limit available")
-      CreateThreadPage.getCreateThreadPageTitleText shouldBe "Thread details"
-      CreateThreadPage.enterMessageDetails(
-        "Lorem ipsum dolor sit amet, " +
-          "consectetuer adipiscing elit. Aenean commodo ligula eget dolor. " +
-          "Aenean massa. Cum sociis natoque penatibus et magnis dis parturient " +
-          "montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, " +
-          "pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. " +
-          "Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. " +
-          "In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam " +
-          "dictum felis eu pede mollis pretium. Integer tincidunt. " +
-          "Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. " +
-          "Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. " +
-          "Aliquam lorem ante, dapibus in, viverra quis, feugiat a,"
-      )
-      CreateThreadPage.getRemainingCharacterCountDisplayed should include("You have 307 characters remaining")
-      CreateThreadPage.enterDate("11", "11", "26")
-      CreateThreadPage.selectSubmitMessageDetailsButton()
-      And("the Test User sees the response date error message")
-      CreateThreadPage.checkResponseDateErrorMessage() should include("Enter the year using 4 digits")
-    }
-
   }
 }
