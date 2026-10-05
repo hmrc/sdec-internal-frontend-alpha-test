@@ -17,108 +17,192 @@
 package uk.gov.hmrc.ui.specs
 
 import org.scalatest.featurespec.AnyFeatureSpec
-import uk.gov.hmrc.ui.pages.{AuthLoginPage, CreateThreadPage, WorkspacePage}
-import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
+import org.scalatest.prop.TableDrivenPropertyChecks
+import uk.gov.hmrc.ui.TestData.AuthTestData
+import uk.gov.hmrc.ui.pages.{AuthLoginPage, WorkspacePage}
+import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
 
-class WorkspaceSpec extends BaseSpec {
+class WorkspaceSpec extends BaseSpec with TableDrivenPropertyChecks {
   Feature("Internal User Journey - Workspace ") {
 
-    Scenario("Get Landing Page with correct Role for test user", AcceptanceTests) {
+    Scenario("Threads created by the Child benefits user can be filtered ", AcceptanceTests) {
+      forAll(AuthTestData.usersWithMyFilterThread) { (pid, givenName, surName, email, roles) =>
+        Given("Child Benefits User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      Given("User Logins with correct role")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_integration_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+        When("the dashboard page loads")
 
-      When("the dashboard page loads")
+        Then("The user clicks the My Threads Filter button to view all the threads created by user")
+        WorkspacePage.selectMyThreadsFilterButton()
 
-      Then("""a "Create thread" button must be displayed""")
-      CreateThreadPage.isCreateThreadButtonEnabled shouldBe true
+        And("The user is able to open the thread to continue working")
+        WorkspacePage.getMyThreadsChildBenefitsFilterText shouldBe "THREAD4000DD"
+        WorkspacePage.clickFirstThreadId("THREAD4000DD")
+      }
     }
 
-    Scenario("View Thread Information", AcceptanceTests) {
+    Scenario("Threads created by the VAT user can be cleared ", AcceptanceTests) {
+      forAll(AuthTestData.usersWithVATUserRole) { (pid, givenName, surName, email, roles) =>
+        Given("VAT User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_integration_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+        When("the dashboard page loads")
 
-      When("the dashboard page loads for the Test User")
+        Then("The user clicks the My Threads Filter button to view all the threads created by user")
+        WorkspacePage.selectMyThreadsFilterButton()
 
-      Then("""the thread information details are displayed in a table with title "shared work queue"""")
-      WorkspacePage.getWorkspaceHeadingText should include("Shared work queue")
+        And("The user clicks the ClearThreads button to clear the filter")
+        WorkspacePage.selectClearThreadsFilterButton()
 
-      And("the table has Thread Reference, Related Reference, External Contact, Status, Waiting on and Deadline")
-      WorkspacePage.getThreadReferenceHeader  shouldBe "Thread reference"
-      WorkspacePage.getRelatedReferenceHeader shouldBe "Related reference"
-      WorkspacePage.getExternalContactHeader  shouldBe "External contact"
-      WorkspacePage.getStatusHeader           shouldBe "Status"
-      WorkspacePage.getWaitingOnHeader        shouldBe "Waiting on"
-      WorkspacePage.getDeadlineHeader         shouldBe "Deadline"
-
+      }
     }
 
-    Scenario("View Thread status for a specific Thread ", AcceptanceTests) {
+    Scenario("The Audit User Views Thread Information", AcceptanceTests) {
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      forAll(AuthTestData.usersWithAuditRole) { (pid, givenName, surName, email, roles) =>
+        Given("Pensions User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the dashboard page loads for the Test User")
+        When("the dashboard page loads for the Test User")
 
-      Then("the Test User views the status for specific Thread Ref No. -THR-2026-0616-0003 ")
+        And("""the thread information details are displayed in a table with title "shared work queue"""")
+        WorkspacePage.getWorkspaceHeadingText should include("Shared work queue")
 
-      WorkspacePage.getStatusValueText shouldBe "Overdue"
+        And("the table has Thread Reference, Related Reference, External Contact, Status, Waiting on and Deadline")
+        WorkspacePage.getThreadReferenceHeader  shouldBe "Thread reference"
+        WorkspacePage.getRelatedReferenceHeader shouldBe "Related reference"
+        WorkspacePage.getExternalContactHeader  shouldBe "External contact"
+        WorkspacePage.getStatusHeader           shouldBe "Status"
+        WorkspacePage.getWaitingOnHeader        shouldBe "Waiting on"
+        WorkspacePage.getDeadlineHeader         shouldBe "Deadline"
 
-      And("the Test User views the other thread status with priority work")
+        Then("The user clicks the My Threads Filter button to view all the threads created by user")
+        WorkspacePage.selectMyThreadsFilterButton()
+        WorkspacePage.getNoThreadsAvailableMessage shouldBe "There are no threads matching the filter you applied."
 
+      }
+    }
+    Scenario("User is both VAT Manager user filter threads  ", AcceptanceTests) {
+
+      forAll(AuthTestData.usersWithVATManager) { (pid, givenName, surName, email, roles) =>
+        Given("Pensions and child Benefits User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
+
+        When("the dashboard page loads for the Test User")
+        WorkspacePage.getStatusValueText shouldBe "Overdue"
+
+        Then("The user clicks the My Threads Filter button to view all the threads created by user")
+        WorkspacePage.selectMyThreadsFilterButton()
+        WorkspacePage.getNoThreadsAvailableMessage shouldBe "There are no threads matching the filter you applied."
+
+      }
     }
 
-    Scenario("Test user opens an active thread and validates and reviews details", AcceptanceTests) {
+    Scenario(
+      "User with Child Benefits Manager user role and not created tickets clicks the My Filters button ",
+      AcceptanceTests
+    ) {
 
-      Given("Test User Logins with Credential ID")
-      AuthLoginPage.navigateToAuthPage()
-      AuthLoginPage.enterPIDValue("123456")
-      AuthLoginPage.enterGivenNameValue("test")
-      AuthLoginPage.enterLastNameValue("user")
-      AuthLoginPage.enterEmailAddressValue("test.user@example.com")
-      AuthLoginPage.selectStatusSuccess()
-      AuthLoginPage.selectSignatureValid()
-      AuthLoginPage.enterRolesText("sdec_qa_tester")
-      AuthLoginPage.selectConfirmAndSendButton()
+      forAll(AuthTestData.usersWithChildBenefitsManagerRole) { (pid, givenName, surName, email, roles) =>
+        Given("User with no roles Logs in ")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
 
-      When("the dashboard page loads for the Test User")
+        When("the dashboard page loads for the Test User")
 
-      Then("the Test User selects first active thread")
-      val threadDetails: List[String] = WorkspacePage.getThreadDetails
-      WorkspacePage.selectFirstThreadReference()
+        Then("the User selects first active thread")
+        val threadDetails: List[String] = WorkspacePage.getThreadDetails
+        WorkspacePage.selectFirstThreadReference()
 
-      And("the Test User verifies thread details")
-      WorkspacePage.getSpecificThreadReferenceText  shouldBe threadDetails.head
-      WorkspacePage.getSpecificRelatedReferenceText shouldBe threadDetails(1)
-      WorkspacePage.getSpecificExternalContactText  shouldBe threadDetails(2)
-      WorkspacePage.getSpecificStatusText           shouldBe threadDetails(3)
-      WorkspacePage.getSpecificWaitingOnText        shouldBe threadDetails(4)
+        And("the User verifies thread details")
+        WorkspacePage.getSpecificThreadReferenceText  shouldBe threadDetails.head
+        WorkspacePage.getSpecificRelatedReferenceText shouldBe threadDetails(1)
+        WorkspacePage.getSpecificExternalContactText  shouldBe threadDetails(2)
+        WorkspacePage.getSpecificStatusText           shouldBe threadDetails(3)
+        WorkspacePage.getSpecificWaitingOnText        shouldBe threadDetails(4)
+
+      }
     }
+    Scenario("User with VAT Manager role created tickets clicks the My Filters button ", AcceptanceTests) {
 
+      forAll(AuthTestData.usersWithVATManager) { (pid, givenName, surName, email, roles) =>
+        Given("User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
+
+        When("the dashboard page loads for the Test User")
+
+        Then("the User clicks on MyThreads Filters")
+        WorkspacePage.selectMyThreadsFilterButton()
+        WorkspacePage.getNoThreadsAvailableMessage shouldBe "There are no threads matching the filter you applied."
+      }
+    }
+    Scenario("User with Audit role created tickets clicks the My Filters button ", AcceptanceTests) {
+
+      forAll(AuthTestData.usersWithAuditRole) { (pid, givenName, surName, email, roles) =>
+        Given("User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
+
+        When("the dashboard page loads for the Test User")
+
+        Then("the User clicks on MyThreads Filters")
+        WorkspacePage.selectMyThreadsFilterButton()
+        WorkspacePage.getNoThreadsAvailableMessage shouldBe "There are no threads matching the filter you applied."
+      }
+    }
   }
 }

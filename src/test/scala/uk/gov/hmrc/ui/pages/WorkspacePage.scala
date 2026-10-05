@@ -63,16 +63,54 @@ object WorkspacePage extends BasePage {
   val statusValueText:         By = By.cssSelector(
     "#main-content > div > div.table-scroll-wrapper > table > tbody > tr:nth-child(1) > td.govuk-table__cell.sdec-priority-column > strong"
   )
-  val statusValueWaitingText: By = By.cssSelector("table.govuk-table tbody tr td.govuk-table__cell:nth-child(4)")
+  val statusValueWaitingText:  By = By.cssSelector("table.govuk-table tbody tr td.govuk-table__cell:nth-child(4)")
+  val myThreadsButtonLocator:  By = By.cssSelector("#dashboard-filters > a")
+  val myThreadsFirstReference: By = By.cssSelector("a[href=\"/sdec-admin-alpha/thread/THREAD4000DD\"]")
+  val clearThreadsLocator:     By =
+    By.cssSelector("#dashboard-filters > a.govuk-button.govuk-button--secondary.govuk-link--no-visited-state")
+
+  val noThreadsMsg: By = By.cssSelector("#main-content > div > p:nth-child(5)")
 
   def getWorkspaceHeadingText: String =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(workspacePageHeading)).getText.trim
 
+  def getMyThreadsChildBenefitsFilterText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(myThreadsFirstReference)).getText.trim
+
+  def getNoThreadsAvailableMessage: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(noThreadsMsg)).getText.trim
+
+  def getMyThreadsChildBenefitsFilterClick: WebElement =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(myThreadsFirstReference))
+
   def getCreateThreadButton: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(createThreadButtonLocator))
 
+  def getMyThreadsButton: WebElement =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(myThreadsButtonLocator))
+
+  def getClearThreadsButton: WebElement =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(clearThreadsLocator))
+
   def getThreadButtonText: String =
     getCreateThreadButton.getText.trim
+
+  def selectFirstReferenceThreadClick(): Unit =
+    getMyThreadsChildBenefitsFilterClick.click()
+
+  def selectMyThreadsFilterButton(): Unit =
+    getMyThreadsButton.click()
+
+  def selectClearThreadsFilterButton(): Unit =
+    getClearThreadsButton.click()
+
+  def clickFirstThreadId(threadId: String): Unit = {
+    val selector = s"a[href='/sdec-admin-alpha/thread/$threadId']"
+    val threadLink: WebElement = webDriverWait.until(
+      ExpectedConditions.elementToBeClickable(By.cssSelector(selector))
+    )
+    threadLink.click()
+  }
 
   def selectCreateThreadButton(): Unit =
     getCreateThreadButton.click()
