@@ -22,36 +22,42 @@ object AuthTestData {
 
   val credentialsWithPassword = Table(
     ("pid", "givenName", "surName", "email", "roles"),
-    ("pid-cb-001", "Jane", "Smith", "jane.smith@hmrc.gov.uk", "sdec_child_benefits"),
-    ("pid-pen-001", "Phil", "Marty", "phil.marty@hmrc.gov.uk", "sdec_pensions"),
-    ("pid-both-001", "Sam", "Doe", "sam.doe@hmrc.gov.uk", "sdec_child_benefits,sdec_pensions"),
-    ("pid-norole-001", "Alex", "Brown", "alex.brown@hmrc.gov.uk", ""),
-    ("pid-bad-001", "Chris", "Green", "chris.green@hmrc.gov.uk", "tax_nonsense")
+    ("1001", "John", "Test", "name@example.com", "SDEC_Child_Benefit_Manager"), // no my threads button
+    ("123456", "VAT Success", "Test User", "name@example.com", "SDEC_VAT_User"), // yes my threads button
+    ("1004", "Mary", "Lamb", "name@example.com", "SDEC_Audit_User"), // yes my threads button
+    ("1002", "James", "Brown", "name@example.com", "SDEC_Child_Benefit_User"), // no my threads button
+    ("1003", "James", "Brown", "name@example.com", "SDEC_VAT_Manager"), // yes my threads button
+    ("pid-pen-001", "John", "Smith", "name@example.com", "SDEC_VAT_User") // yes my threads button with filter available
   )
 
-  val usersWithChildBenefits = credentialsWithPassword.filter { row =>
+  val usersWithChildBenefitsManagerRole = credentialsWithPassword.filter { row =>
     val pid = row.productElement(0).toString
-    pid.contains("pid-cb-001")
+    pid.contains("1001")
   }
 
-  val usersWithPensions = credentialsWithPassword.filter { row =>
+  val usersWithVATUserRole = credentialsWithPassword.filter { row =>
+    val pid = row.productElement(0).toString
+    pid.contains("123456")
+  }
+
+  val usersWithAuditRole = credentialsWithPassword.filter { row =>
+    val pid = row.productElement(0).toString
+    pid.contains("1004")
+  }
+
+  val usersWithChildBenefitsUser = credentialsWithPassword.filter { row =>
+    val pid = row.productElement(0).toString
+    pid.contains("1002")
+  }
+
+  val usersWithVATManager = credentialsWithPassword.filter { row =>
+    val pid = row.productElement(0).toString
+    pid.contains("1003")
+  }
+
+  val usersWithMyFilterThread = credentialsWithPassword.filter { row =>
     val pid = row.productElement(0).toString
     pid.contains("pid-pen-001")
-  }
-
-  val usersWithBothRoles = credentialsWithPassword.filter { row =>
-    val pid = row.productElement(0).toString
-    pid.contains("pid-both-001")
-  }
-
-  val usersWithNoRoles = credentialsWithPassword.filter { row =>
-    val pid = row.productElement(0).toString
-    pid.contains("pid-norole-001")
-  }
-
-  val usersWithTax = credentialsWithPassword.filter { row =>
-    val pid = row.productElement(0).toString
-    pid.contains("pid-bad-001")
   }
 
   def getUsersWithRole(roleName: String) =

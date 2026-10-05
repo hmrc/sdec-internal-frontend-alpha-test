@@ -30,7 +30,7 @@ class CheckYourAnswersSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithChildBenefits) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithVATManager) { (pid, givenName, surName, email, roles) =>
         Given("Child Benefits User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -80,7 +80,7 @@ class CheckYourAnswersSpec extends BaseSpec with TableDrivenPropertyChecks {
 
     Scenario("The User with pensions successfully submits the Check your Answers page ", AcceptanceTests) {
 
-      forAll(AuthTestData.usersWithPensions) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithVATUserRole) { (pid, givenName, surName, email, roles) =>
         Given("Pensions User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -123,7 +123,7 @@ class CheckYourAnswersSpec extends BaseSpec with TableDrivenPropertyChecks {
 
     Scenario("The User validates contact details and date in Check your answers page", AcceptanceTests) {
 
-      forAll(AuthTestData.usersWithBothRoles) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithVATManager) { (pid, givenName, surName, email, roles) =>
         Given("Pensions and child Benefits User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -170,7 +170,7 @@ class CheckYourAnswersSpec extends BaseSpec with TableDrivenPropertyChecks {
 
     Scenario("The User successfully amends the name in who are you contacting page", AcceptanceTests) {
 
-      forAll(AuthTestData.usersWithNoRoles) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithAuditRole) { (pid, givenName, surName, email, roles) =>
         Given("User with no roles Logs in ")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -220,7 +220,7 @@ class CheckYourAnswersSpec extends BaseSpec with TableDrivenPropertyChecks {
 
     Scenario("The User successfully amends the date in check your Answers page", AcceptanceTests) {
 
-      forAll(AuthTestData.usersWithTax) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithVATUserRole) { (pid, givenName, surName, email, roles) =>
         Given("User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -272,7 +272,7 @@ class CheckYourAnswersSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithNoRoles) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithAuditRole) { (pid, givenName, surName, email, roles) =>
         Given("User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -320,7 +320,7 @@ class CheckYourAnswersSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithChildBenefits) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithChildBenefitsManagerRole) { (pid, givenName, surName, email, roles) =>
         Given("Child Benefits User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)

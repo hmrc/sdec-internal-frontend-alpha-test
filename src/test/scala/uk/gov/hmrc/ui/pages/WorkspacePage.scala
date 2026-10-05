@@ -65,7 +65,7 @@ object WorkspacePage extends BasePage {
   )
   val statusValueWaitingText:  By = By.cssSelector("table.govuk-table tbody tr td.govuk-table__cell:nth-child(4)")
   val myThreadsButtonLocator:  By = By.cssSelector("#dashboard-filters > a")
-  val myThreadsFirstReference: By = By.cssSelector("a[href=\"/sdec-admin-alpha/thread/THREAD1000AA\"]")
+  val myThreadsFirstReference: By = By.cssSelector("a[href=\"/sdec-admin-alpha/thread/THREAD4000DD\"]")
   val clearThreadsLocator:     By =
     By.cssSelector("#dashboard-filters > a.govuk-button.govuk-button--secondary.govuk-link--no-visited-state")
 

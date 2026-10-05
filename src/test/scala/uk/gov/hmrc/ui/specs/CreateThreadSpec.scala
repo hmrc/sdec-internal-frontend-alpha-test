@@ -58,7 +58,7 @@ class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithChildBenefits) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithChildBenefitsUser) { (pid, givenName, surName, email, roles) =>
         Given("Child Benefits User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -94,7 +94,7 @@ class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithPensions) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithAuditRole) { (pid, givenName, surName, email, roles) =>
         Given("Pensions User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -133,7 +133,7 @@ class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithBothRoles) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithVATManager) { (pid, givenName, surName, email, roles) =>
         Given("Pensions and child Benefits User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -186,7 +186,7 @@ class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithNoRoles) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithVATUserRole) { (pid, givenName, surName, email, roles) =>
         Given("User with no roles Logs in ")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -243,7 +243,7 @@ class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
 
     Scenario("The Tax User enters the contact details and clicks yes for related case", AcceptanceTests) {
 
-      forAll(AuthTestData.usersWithTax) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithVATManager) { (pid, givenName, surName, email, roles) =>
         Given("User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -279,7 +279,7 @@ class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
 
     Scenario("Child Benefits user creates a new thread and provides valid response date for deadline", AcceptanceTests) {
 
-      forAll(AuthTestData.usersWithChildBenefits) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithChildBenefitsManagerRole) { (pid, givenName, surName, email, roles) =>
         Given("Child Benifits User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -336,7 +336,7 @@ class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithPensions) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithChildBenefitsUser) { (pid, givenName, surName, email, roles) =>
         Given("Pensions User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -401,7 +401,7 @@ class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithBothRoles) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithAuditRole) { (pid, givenName, surName, email, roles) =>
         Given("Pensions and child Benefits User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -464,7 +464,7 @@ class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithNoRoles) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithVATUserRole) { (pid, givenName, surName, email, roles) =>
         Given("User with no roles Logs in ")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -520,7 +520,7 @@ class CreateThreadSpec extends BaseSpec with TableDrivenPropertyChecks {
       AcceptanceTests
     ) {
 
-      forAll(AuthTestData.usersWithTax) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithChildBenefitsUser) { (pid, givenName, surName, email, roles) =>
         Given("User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)

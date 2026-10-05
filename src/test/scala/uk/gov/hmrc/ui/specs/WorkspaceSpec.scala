@@ -26,8 +26,8 @@ class WorkspaceSpec extends BaseSpec with TableDrivenPropertyChecks {
   Feature("Internal User Journey - Workspace ") {
 
     Scenario("Threads created by the Child benefits user can be filtered ", AcceptanceTests) {
-      forAll(AuthTestData.usersWithChildBenefits) { (pid, givenName, surName, email, roles) =>
-        Given("Child Benifits User Logins with correct role")
+      forAll(AuthTestData.usersWithMyFilterThread) { (pid, givenName, surName, email, roles) =>
+        Given("Child Benefits User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
         AuthLoginPage.enterGivenNameValue(givenName)
@@ -44,14 +44,14 @@ class WorkspaceSpec extends BaseSpec with TableDrivenPropertyChecks {
         WorkspacePage.selectMyThreadsFilterButton()
 
         And("The user is able to open the thread to continue working")
-        WorkspacePage.getMyThreadsChildBenefitsFilterText shouldBe "THREAD1000AA"
-        WorkspacePage.clickFirstThreadId("THREAD1000AA")
+        WorkspacePage.getMyThreadsChildBenefitsFilterText shouldBe "THREAD4000DD"
+        WorkspacePage.clickFirstThreadId("THREAD4000DD")
       }
     }
 
-    Scenario("Threads created by the Child benefits user can be cleared ", AcceptanceTests) {
-      forAll(AuthTestData.usersWithChildBenefits) { (pid, givenName, surName, email, roles) =>
-        Given("Child Benifits User Logins with correct role")
+    Scenario("Threads created by the VAT user can be cleared ", AcceptanceTests) {
+      forAll(AuthTestData.usersWithVATUserRole) { (pid, givenName, surName, email, roles) =>
+        Given("VAT User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
         AuthLoginPage.enterGivenNameValue(givenName)
@@ -73,9 +73,9 @@ class WorkspaceSpec extends BaseSpec with TableDrivenPropertyChecks {
       }
     }
 
-    Scenario("The Pensions User Views Thread Information", AcceptanceTests) {
+    Scenario("The Audit User Views Thread Information", AcceptanceTests) {
 
-      forAll(AuthTestData.usersWithPensions) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithAuditRole) { (pid, givenName, surName, email, roles) =>
         Given("Pensions User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -102,13 +102,13 @@ class WorkspaceSpec extends BaseSpec with TableDrivenPropertyChecks {
 
         Then("The user clicks the My Threads Filter button to view all the threads created by user")
         WorkspacePage.selectMyThreadsFilterButton()
-        WorkspacePage.clickFirstThreadId("THREAD4000DD")
+        WorkspacePage.getNoThreadsAvailableMessage shouldBe "There are no threads matching the filter you applied."
 
       }
     }
-    Scenario("User is both pensions and child benefit user filter threads  ", AcceptanceTests) {
+    Scenario("User is both VAT Manager user filter threads  ", AcceptanceTests) {
 
-      forAll(AuthTestData.usersWithBothRoles) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithVATManager) { (pid, givenName, surName, email, roles) =>
         Given("Pensions and child Benefits User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -125,14 +125,17 @@ class WorkspaceSpec extends BaseSpec with TableDrivenPropertyChecks {
 
         Then("The user clicks the My Threads Filter button to view all the threads created by user")
         WorkspacePage.selectMyThreadsFilterButton()
-        WorkspacePage.clickFirstThreadId("THREAD5000EE")
+        WorkspacePage.getNoThreadsAvailableMessage shouldBe "There are no threads matching the filter you applied."
 
       }
     }
 
-    Scenario("User with no role and not created tickets clicks the My Filters button ", AcceptanceTests) {
+    Scenario(
+      "User with Child Benefits Manager user role and not created tickets clicks the My Filters button ",
+      AcceptanceTests
+    ) {
 
-      forAll(AuthTestData.usersWithNoRoles) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithChildBenefitsManagerRole) { (pid, givenName, surName, email, roles) =>
         Given("User with no roles Logs in ")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -159,9 +162,9 @@ class WorkspaceSpec extends BaseSpec with TableDrivenPropertyChecks {
 
       }
     }
-    Scenario("User with tax role created tickets clicks the My Filters button ", AcceptanceTests) {
+    Scenario("User with VAT Manager role created tickets clicks the My Filters button ", AcceptanceTests) {
 
-      forAll(AuthTestData.usersWithTax) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithVATManager) { (pid, givenName, surName, email, roles) =>
         Given("User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
@@ -180,9 +183,9 @@ class WorkspaceSpec extends BaseSpec with TableDrivenPropertyChecks {
         WorkspacePage.getNoThreadsAvailableMessage shouldBe "There are no threads matching the filter you applied."
       }
     }
-    Scenario("User with No role created tickets clicks the My Filters button ", AcceptanceTests) {
+    Scenario("User with Audit role created tickets clicks the My Filters button ", AcceptanceTests) {
 
-      forAll(AuthTestData.usersWithNoRoles) { (pid, givenName, surName, email, roles) =>
+      forAll(AuthTestData.usersWithAuditRole) { (pid, givenName, surName, email, roles) =>
         Given("User Logins with correct role")
         AuthLoginPage.navigateToAuthPage()
         AuthLoginPage.enterPIDValue(pid)
