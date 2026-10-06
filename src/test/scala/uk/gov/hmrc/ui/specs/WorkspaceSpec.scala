@@ -221,7 +221,7 @@ class WorkspaceSpec extends BaseSpec with TableDrivenPropertyChecks {
 
         When("the dashboard page loads for the Test User")
 
-        And("""the thread information details are displayed in a table with title "shared work queue"""")
+        And("The user is able to navigate to Workspace page which validates user has access to SDEC")
         WorkspacePage.getWorkspaceHeadingText should include("Shared work queue")
       }
     }
