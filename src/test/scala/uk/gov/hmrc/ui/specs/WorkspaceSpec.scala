@@ -204,5 +204,26 @@ class WorkspaceSpec extends BaseSpec with TableDrivenPropertyChecks {
         WorkspacePage.getNoThreadsAvailableMessage shouldBe "There are no threads matching the filter you applied."
       }
     }
+
+    Scenario("The Audit User logs into the SDEC and verifies he is able to login", AcceptanceTests) {
+
+      forAll(AuthTestData.usersWithAuditRole) { (pid, givenName, surName, email, roles) =>
+        Given("Pensions User Logins with correct role")
+        AuthLoginPage.navigateToAuthPage()
+        AuthLoginPage.enterPIDValue(pid)
+        AuthLoginPage.enterGivenNameValue(givenName)
+        AuthLoginPage.enterLastNameValue(surName)
+        AuthLoginPage.enterEmailAddressValue(email)
+        AuthLoginPage.selectStatusSuccess()
+        AuthLoginPage.selectSignatureValid()
+        AuthLoginPage.enterRolesText(roles)
+        AuthLoginPage.selectConfirmAndSendButton()
+
+        When("the dashboard page loads for the Test User")
+
+        And("The user is able to navigate to Workspace page which validates user has access to SDEC")
+        WorkspacePage.getWorkspaceHeadingText should include("Shared work queue")
+      }
+    }
   }
 }
